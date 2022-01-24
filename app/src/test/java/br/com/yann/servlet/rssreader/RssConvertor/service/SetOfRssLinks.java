@@ -1,4 +1,4 @@
-package br.com.yann.servlet.rssreader.RssConvertor.service;
+package br.com.yann.servlet.rssreader.rssconvertor.service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package br.com.yann.servlet.rssreader.RssConvertor;
+package br.com.yann.servlet.rssreader.rssconvertor;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -8,7 +8,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import br.com.yann.servlet.rssreader.RssConvertor.service.SetOfRssLinks;
+import br.com.yann.servlet.rssreader.rssconvertor.service.SetOfRssLinks;
 import br.com.yann.servlet.rssreader.model.Rss;
 import br.com.yann.servlet.rssreader.util.RssConvertor;
 import jakarta.xml.bind.UnmarshalException;
