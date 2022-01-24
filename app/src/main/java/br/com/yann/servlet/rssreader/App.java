@@ -9,8 +9,10 @@ import br.com.yann.servlet.rssreader.util.RssConvertor;
 public class App {
 
    public static void main(String[] args)  {
+    String url = "https://readwrite.com/feed";
+     //String url = "https://www.fashionlady.in/category/beauty-tips/feed";
 
-    String url = "http://blogs.bing.com/webmaster/feed/";
+    
 
     RssConvertor convertor = new RssConvertor();
     Rss rss = convertor.getRss(url);

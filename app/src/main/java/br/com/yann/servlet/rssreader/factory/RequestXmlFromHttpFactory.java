@@ -1,19 +1,26 @@
 package br.com.yann.servlet.rssreader.factory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class RequestXmlFromHttpFactory implements RequestXmlInterface {
-     //TODO improve try-catch
-     //TODO refactory tratar url
+  
+    
     //TODO implement o not found
-    //TODO nao retorno 200 - https://www.howsweeteats.com/feed treat with erro - https://readwrite.comfeed/
-    //carega a pg depois redireciona https://www.deque.com/feed/- 
 
-    final private OkHttpClient client =  new OkHttpClient();
+    final private OkHttpClient client;
+
+    public RequestXmlFromHttpFactory() {
+      client = new OkHttpClient().newBuilder()
+                  .connectTimeout(1, TimeUnit.MINUTES)
+                  .readTimeout(1, TimeUnit.MINUTES)
+                  .callTimeout(1, TimeUnit.MINUTES)
+                  .build();
+    }
 
     private String xml = ""; 
 

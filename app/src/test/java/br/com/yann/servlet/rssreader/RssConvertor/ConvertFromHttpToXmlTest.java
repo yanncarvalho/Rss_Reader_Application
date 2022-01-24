@@ -1,9 +1,9 @@
 package br.com.yann.servlet.rssreader.RssConvertor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.google.common.util.concurrent.AtomicDouble;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,50 +11,51 @@ import org.junit.jupiter.api.Test;
 import br.com.yann.servlet.rssreader.RssConvertor.service.SetOfRssLinks;
 import br.com.yann.servlet.rssreader.model.Rss;
 import br.com.yann.servlet.rssreader.util.RssConvertor;
+import jakarta.xml.bind.UnmarshalException;
 
 public class ConvertFromHttpToXmlTest {
 
   RssConvertor convertor = new RssConvertor();
 
   @Test
-  public void itMustConvert1628RssFileAndCheckIfTheMostImportantAtrribuitsInEachOneAreNotNull() {
+  public void itMustConvertMoreThan1kRssLinksAndCheckIfTheMostImportantAtrribuitsInEachOneAreNotNull() {
 
     long startTime = System.currentTimeMillis();
 
     SetOfRssLinks setOfRssLinks  = new SetOfRssLinks();
 
     Set<String> urls = setOfRssLinks.getSet();
-    List<String> erros = new ArrayList<>();
-    AtomicInteger cont = new AtomicInteger(1);
-   
+    int size = urls.size();
+    double percentVariation = (double) 100/size;
+    AtomicDouble percentage = new AtomicDouble();
+    AtomicInteger counter = new AtomicInteger(1);
     urls.forEach(
-      url ->{      
+      url ->{   
+            percentage.addAndGet(percentVariation);
+            System.out.println(String.format("%.2f%% (%d/%d) - %s",percentage.get(),  counter.getAndIncrement(), size, url));   
             try {
-              System.out.print(cont.getAndIncrement()+ " ");
+            
               Rss rss = convertor.getRss(url);
               Assertions.assertNotNull(rss.getTitle());
-      
+
             } catch (Exception e) {
-              
-              System.out.println();
-              System.out.println("error: "+url);
-              erros.add(url+";"+e.getMessage());
-            //Assertions.fail("Cannot convert: " + url + System.lineSeparator() + e.getMessage());
+                 
+              Assertions.fail("Cannot convert: " + url + System.lineSeparator() + e.getMessage());
            
             }
+
+         
        }
     );
     long endTime = System.currentTimeMillis();
     double timeElapsed = ((endTime - startTime) / 1000) / 60;
-    System.out.println("______________Erros______________)");
-    erros.forEach(System.out::println);
     System.out.println("Execution time in minutes: " + timeElapsed);
   }
 
   @Test
   public void itMustFailTryingToConvert() {
     String xml = "https://www.w3schools.com/xml/note.xml";
-    Assertions.assertThrows(Exception.class, () -> convertor.getRss(xml));
+    Assertions.assertThrows(UnmarshalException.class, () -> convertor.getRss(xml));
 
   }
 
