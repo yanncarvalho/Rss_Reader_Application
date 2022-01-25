@@ -7,29 +7,19 @@
  */
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
+    
     id 'application'
-    id 'war'
+    id 'idea'
+   
+    
 }
 
-apply plugin: 'idea'
+ apply plugin: 'war'
+ apply plugin:'java'
+
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
-}
-
-
-jar {
-    archiveName = 'Name.jar'
-
-    manifest {
-        attributes 'Main-Class': 'app.class',
-                'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' '),
-                'Implementation-Version': project.version
-    }
-
-    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
 }
 
 
@@ -44,7 +34,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-
 
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
     
