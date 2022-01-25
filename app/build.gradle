@@ -10,28 +10,18 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'war'
+    id 'idea'
+       
 }
 
-apply plugin: 'idea'
+apply plugin: 'java'
+
+apply plugin: 'maven'
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
-
-
-jar {
-    archiveName = 'Name.jar'
-
-    manifest {
-        attributes 'Main-Class': 'app.class',
-                'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' '),
-                'Implementation-Version': project.version
-    }
-
-    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
-}
-
 
 dependencies {
     
