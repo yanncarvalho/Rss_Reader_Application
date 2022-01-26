@@ -4,14 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
 
-@Stateless
 public class RequestXmlFromLocalFileFactory implements RequestXmlInterface {
 
-  @Inject
-  private String xml;
+
+  private String xml="";
 
   @Override
   public String getXml(String uri) throws IOException {
