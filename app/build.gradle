@@ -1,16 +1,28 @@
 plugins {
-
     id 'application'
 }
 
 
  apply plugin: 'war'
- apply plugin:'java'
+ apply plugin: 'java'
 
 
 repositories {
     mavenCentral()
 }
+
+war {
+    baseName = 'reader'
+}
+
+task deploy(type: Copy) {
+    from war 
+    String jboss = System.getenv("JBOSS_HOME")
+    String url = "${jboss.replace("\\", "/")}/standalone/deployments"
+    into "${url}"
+    println "Deploy Folder: ${url}"
+}
+
 
 dependencies {
 
@@ -20,8 +32,6 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
-    // implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
-    
     implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
 
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:8.0.0'
