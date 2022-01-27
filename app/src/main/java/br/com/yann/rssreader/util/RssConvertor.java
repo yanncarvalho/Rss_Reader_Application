@@ -5,21 +5,23 @@ import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import br.com.yann.rssreader.factory.RequestXmlFromHttpFactory;
-import br.com.yann.rssreader.factory.RequestXmlInterface;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import br.com.yann.rssreader.factory.interfaces.RequestXmlInterface;
 import br.com.yann.rssreader.model.Rss;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
+@Stateless
 public class RssConvertor {
 
+  @Inject
   private RequestXmlInterface factory;
   private JAXBContext context;
 
-  public RssConvertor() {
-    factory = new RequestXmlFromHttpFactory();
-  }
-
+ 
   private String prepareURI(String uri) {
     return uri.replace(" ", "");
   }

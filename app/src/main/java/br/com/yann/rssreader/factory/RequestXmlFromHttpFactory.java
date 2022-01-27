@@ -3,10 +3,17 @@ package br.com.yann.rssreader.factory;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.ManagedBean;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+
+import br.com.yann.rssreader.factory.interfaces.RequestXmlInterface;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+@Stateless
+@ManagedBean 
 public class RequestXmlFromHttpFactory implements RequestXmlInterface {
   
     
@@ -15,6 +22,7 @@ public class RequestXmlFromHttpFactory implements RequestXmlInterface {
     private String xml=""; 
 
     final private OkHttpClient client;
+    @Inject
 
     public RequestXmlFromHttpFactory() {
       client = new OkHttpClient().newBuilder()

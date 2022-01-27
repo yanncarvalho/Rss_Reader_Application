@@ -18,7 +18,7 @@ war {
 task deploy(type: Copy) {
     from war 
     String jboss = System.getenv("JBOSS_HOME")
-    String url = "${jboss.replace("\\", "/")}/standalone/deployments"
+    String url = "${jboss.replace("\\", "/")}\\standalone\\deployments"
     into "${url}"
     println "Deploy Folder: ${url}"
 }
@@ -34,8 +34,10 @@ dependencies {
 
     implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
 
-    compileOnly 'jakarta.platform:jakarta.jakartaee-api:8.0.0'
+   compileOnly 'jakarta.platform:jakarta.jakartaee-api:8.0.0'
+   
     
+
 }
 
 application {

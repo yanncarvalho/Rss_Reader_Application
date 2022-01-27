@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import br.com.yann.rssreader.factory.interfaces.RequestXmlInterface;
+
 
 public class RequestXmlFromLocalFileFactory implements RequestXmlInterface {
 
