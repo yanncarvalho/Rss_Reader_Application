@@ -30,21 +30,21 @@ public class ConvertFromHttpToXmlTest {
     AtomicDouble percentage = new AtomicDouble();
     AtomicInteger counter = new AtomicInteger(1);
     urls.forEach(
-      url ->{   
+      url ->{
             percentage.addAndGet(percentVariation);
-            System.out.println(String.format("%.2f%% (%d/%d) - %s",percentage.get(),  counter.getAndIncrement(), size, url));   
+            System.out.println(String.format("%.2f%% (%d/%d) - %s",percentage.get(),  counter.getAndIncrement(), size, url));
             try {
-            
+
               Rss rss = convertor.getRss(url);
               Assert.assertNotNull(rss.getTitle());
 
             } catch (Exception e) {
-                 
+
               Assert.fail("Cannot convert: " + url + System.lineSeparator() + e.getMessage());
-           
+
             }
 
-         
+
        }
     );
     long endTime = System.currentTimeMillis();
@@ -59,7 +59,7 @@ public class ConvertFromHttpToXmlTest {
 
   // }
 
-  
+
 
 
   // @Test //TODO IMPLEMENT AN EMPTY TEST

@@ -4,15 +4,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Stateless
-@RequestScoped
 public class RequestXmlFromHttpFactory{
 
 

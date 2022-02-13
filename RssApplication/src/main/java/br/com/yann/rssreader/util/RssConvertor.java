@@ -10,16 +10,15 @@ import javax.inject.Inject;
 
 import br.com.yann.rssreader.factory.RequestXmlFromHttpFactory;
 import br.com.yann.rssreader.model.Rss;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
 @Stateless
-@RequestScoped
 public class RssConvertor {
 
   private RequestXmlFromHttpFactory factory;
   private JAXBContext context;
+
 
    @Inject
    public RssConvertor(){
