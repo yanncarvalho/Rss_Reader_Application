@@ -33,6 +33,7 @@ dependencies {
     implementation 'org.glassfish.jersey.core:jersey-client:3.0.4'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 
+
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:8.0.0'
 }
 

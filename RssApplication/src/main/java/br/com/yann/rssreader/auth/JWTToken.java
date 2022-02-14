@@ -13,13 +13,14 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
 public class JWTToken {
+  private final String KEY = "7f-j&CKk=coNzZc0y7_4obMP?#TfcYq%fcD0mDpenW2nc!lfGoZ|d?f&RNbDHUX6";
 
-  public String generate (String login, String password) {
+  public String generate (String login) {
 
     RSAKey rsaJWK;
     try {
       rsaJWK = new RSAKeyGenerator(2048)
-          .keyID(password)
+          .keyID	(KEY)
           .generate();
       JWSSigner signer = new RSASSASigner(rsaJWK);
       JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
