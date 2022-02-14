@@ -1,6 +1,7 @@
 package br.com.yann.rssreader.data;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,6 +22,12 @@ public class UserDao {
   public List<User> findAll() {
     Query query = manager.createNativeQuery("SELECT * FROM USER");
     return (List<User>) query.getResultList();
+  }
+
+  //FIXME nao esta funcionando
+  public User findById(User user) {
+    Query query = manager.createNativeQuery("SELECT * FROM USER WHERE id = :id").setParameter("id", user.getId());
+    return (User) query.getResultList().stream().findAny().get();
   }
 
 }
