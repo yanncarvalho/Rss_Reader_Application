@@ -1,23 +1,16 @@
 package br.com.yann.rssreader.entity;
 
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 @Entity
 public class User {
 
-
-
   private String name;
   @Id
   private String login;
   private String password;
-  @Enumerated(EnumType.STRING)
-  private UserRole role;
+  private boolean admin = false;
 
 
   public User() {
@@ -31,12 +24,12 @@ public class User {
   //   this.url = url;
   // }
 
-  public UserRole getStatus() {
-    return role;
+  public boolean getAdmin(){
+    return this.admin;
   }
 
-  public void setStatus(UserRole status) {
-    this.role = status;
+  public void setAdmin(boolean admin){
+    this.admin = admin;
   }
 
   public String getPassword() {

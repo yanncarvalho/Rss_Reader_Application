@@ -1,8 +1,8 @@
 package br.com.yann.rssreader.controller;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -22,11 +22,13 @@ FINDUSER
 public class AllUsersController {
 
   @Inject
-  AllUsersService service;  
+  AllUsersService service;
+
 
 
   @POST
   @Path("login")
+  @PermitAll
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.TEXT_PLAIN)
   public Response login(User user){
@@ -39,6 +41,7 @@ public class AllUsersController {
 
   @POST
   @Path("save")
+  @PermitAll
   @Consumes (value = {MediaType.APPLICATION_JSON})
   public Response saveUser(User user){
      String answer = service.saveNewUser(user);
