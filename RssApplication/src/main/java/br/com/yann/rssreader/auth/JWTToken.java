@@ -22,18 +22,18 @@ import br.com.yann.rssreader.data.AllUsersDao;
 import br.com.yann.rssreader.entity.User;
 
 public class JWTToken {
-  private final byte[] KEY = "60C5E1934BE6E6775B13FFDC25665C4C3854F045A7C073B0B190509ABA2A679A".getBytes();
+  private final byte[] PRIVATE_KEY = "2020b07bfa0aaa1a6b7f2c51d2f827a7f9672c7c4956bf63cc45d9ca8b75165357c825154336628c32c56fb1d7b6e8c4271fdc20ecfd25e1b4cd0e9e09e1e097".getBytes();
   @Named("allUser")
   AllUsersDao dao;
 
   public String encode (User user) {
 
     try {
-      JWSSigner signer = new MACSigner(this.KEY);//user.getPassword().getBytes());
+      JWSSigner signer = new MACSigner(this.PRIVATE_KEY);//user.getPassword().getBytes());
 
       JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-          .claim("Login", user.getLogin())
-          .claim("isAdmin", user.getAdmin())
+          .claim("login", user.getUsername())
+          .claim("isAdmin", user.isAdmin())
           .expirationTime(new Date(new Date().getTime() + 60 * 1000))
           .build();
 
@@ -56,15 +56,13 @@ public class JWTToken {
     JWSVerifier verifier = new MACVerifier(key);
      return jwsObject.verify(verifier);
   }
-  public Map<?,?> decode (String token) {
+  public Map<String, Object> decode (String token) {
 
       try {
 
          Map<String, Object> map = JWTParser.parse(token).getJWTClaimsSet().toJSONObject();
-         byte[] key = dao.findByLogin((String) map.get("Login"))
-                          .getPassword()
-                          .getBytes();
-        if (isTokenValied(token, this.KEY))
+
+        if (isTokenValied(token, this.PRIVATE_KEY))
           return map;
       } catch (ParseException | JOSEException e) {
         return null;

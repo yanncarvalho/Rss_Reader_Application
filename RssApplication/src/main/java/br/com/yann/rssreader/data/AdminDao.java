@@ -12,20 +12,16 @@ import br.com.yann.rssreader.entity.User;
 
 @Stateless
 @Named("Admin")
-public class AdminDao extends AllUsersDao {
+public class AdminDao  extends AllUsersDao{
 
   @PersistenceContext(name="rssreader")
   private EntityManager manager;
 
-
+  @SuppressWarnings({"unchecked"})
   public List<User> findAll() {
     Query query = manager.createQuery("FROM "+User.class.getName());
    return (List<User>) query.getResultList();
-
  }
 
- public User findByLogin(String login) {
-  return manager.find(User.class,login);
-  }
 }
 

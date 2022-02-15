@@ -1,6 +1,7 @@
 package br.com.yann.rssreader.auth;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
@@ -15,13 +16,12 @@ import javax.ws.rs.ext.Provider;
 public class JWTRequestFilter implements ContainerRequestFilter {
 
   @Inject
-  JWTToken token;
+  JWTToken tokenJWT;
 
   //private static final Pattern CHALLENGE_PATTERN = Pattern.compile("^Bearer *([^ ]+) *$", Pattern.CASE_INSENSITIVE);
   private boolean hasToBeAdmin(String path){
       return (path.contains("auth/admin"));
   }
-  //TODO VERIFICAR LOFICA ARSITOTELES
   private boolean hasToHaveToken(String path){
     return !(path.contains("auth/login")) && !(path.contains("auth/save")) ;
   }
@@ -29,18 +29,15 @@ public class JWTRequestFilter implements ContainerRequestFilter {
   @Override
   public void filter(ContainerRequestContext requestContext) throws IOException {
     String path = requestContext.getUriInfo().getAbsolutePath().toString();
-    //TODO VALIDAR SE USUARIO PRESENTE NO BANCO
     if (hasToHaveToken(path)){
-
       String jwt = requestContext.getHeaderString("Authorization").substring("Bearer ".length());
       if (jwt == null || jwt.isEmpty())
        requestContext.abortWith(Response.status(406, "AUTHORIZATION NOT ACCEPTED").build());
-      var decode = token.decode(jwt);
+      Map<String,Object> decode = tokenJWT.decode(jwt);
       if (decode == null){
         requestContext.abortWith(Response.status(401, "TOKEN IS NOT VALID").build());
       }
       if (hasToBeAdmin(path)){
-        System.out.println("hasToBeAdmin");
           if (!((Boolean) decode.get("isAdmin"))){
             requestContext.abortWith(Response.status(403, "YOU DON'T HAVE AUTHORIZATION").build());
           }

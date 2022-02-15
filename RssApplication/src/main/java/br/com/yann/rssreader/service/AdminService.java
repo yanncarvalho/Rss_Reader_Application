@@ -17,13 +17,21 @@ public class AdminService {
   AdminDao dao;
 
 
-  public List<User> getUsers() {
+  public List<User> listUsers() {
     return dao.findAll();
   }
 
   public void updateAnyUser (User user){
-    User userByLogin = dao.findByLogin(user.getLogin());
-    dao.save(userByLogin);
+    dao.update(user);
   }
+
+  public User findAnyUserByUsername(String username) {
+    return dao.findByUsername(username);
+  }
+
+  public void deleteAnyUser(String username) {
+    dao.delete(dao.findByUsername(username));
+  }
+
 
 }

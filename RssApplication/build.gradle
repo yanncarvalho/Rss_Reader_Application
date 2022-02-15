@@ -31,7 +31,6 @@ dependencies {
     implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
     implementation 'com.nimbusds:nimbus-jose-jwt:9.19'
     implementation 'org.glassfish.jersey.core:jersey-client:3.0.4'
-    implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
 
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:8.0.0'
 }
