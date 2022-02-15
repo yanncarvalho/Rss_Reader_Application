@@ -1,6 +1,5 @@
 package br.com.yann.rssreader.service;
 
-import javax.annotation.security.PermitAll;
 import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -14,6 +13,7 @@ import br.com.yann.rssreader.entity.User;
 @Default
 public class AllUsersService {
 
+  private static final User User = null;
   @Inject
   @Named("allUser")
   AllUsersDao dao;
@@ -22,22 +22,20 @@ public class AllUsersService {
 
   public String saveNewUser (User user){
     dao.save(user);
-    return token.encode(user.hashCode());
-
+    return token.encode(user);
   }
 
-  public String getUser (User user){
+  public String login (User user){
     User userByLogin = dao.findByLogin(user.getLogin());
-
-
     if (userByLogin != null && userByLogin.equals(user))
     {
-        //TODO GUARDAR TOKEN
-        return token.encode(user.hashCode());
-      }
+        return token.encode(user);
+    }
    return null;
 
   }
-
-
+//TODO dto
+  public User getUser (User user){
+    return dao.findByLogin(user.getLogin());
+  }
 }

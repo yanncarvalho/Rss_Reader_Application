@@ -2,7 +2,6 @@ package br.com.yann.rssreader.controller;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -28,7 +27,6 @@ public class AdminController{
   //TODO nao pode retornar as senhas
   //TODO criptografar as senhas
   @GET
-  @PermitAll
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response listUsers(){
     List<User> users = service.getUsers();
