@@ -21,9 +21,6 @@ public class AdminController{
 
   @Inject
   AdminService service;
-  //TODO DTO
-  //TODO nao pode retornar as senhas
-
 
   @GET
   @Path("listUsers")

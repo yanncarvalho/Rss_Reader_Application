@@ -16,7 +16,6 @@ import br.com.yann.rssreader.entity.User;
 import br.com.yann.rssreader.service.AllUsersService;
 
 
-//TODO melhorar nome
 @Path("auth/")
 public class AllUsersController {
 
@@ -64,7 +63,7 @@ public class AllUsersController {
   return Response.ok().build();
   }
 
-  @DELETE
+
   @PUT
   @Path("update")
   @Consumes (value = {MediaType.APPLICATION_JSON})
