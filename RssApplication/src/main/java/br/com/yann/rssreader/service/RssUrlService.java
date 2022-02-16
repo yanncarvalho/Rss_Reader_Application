@@ -1,5 +1,6 @@
 package br.com.yann.rssreader.service;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ public class RssUrlService {
   @Inject
   private JWTToken tokenJWT;
 
-  public Set<String> findAll(String token) {
+  public List<String> findAll(String token) {
     User user  = dao.findByUsername((String)tokenJWT.decode(token).get("username"));
     return user.getUrlsRss();
   }

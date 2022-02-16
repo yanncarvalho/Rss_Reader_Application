@@ -1,7 +1,9 @@
 package br.com.yann.rssreader.entity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -27,13 +29,13 @@ public class User {
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name="rss_urls", joinColumns = @JoinColumn(name="id") )
-  private Set<String> urls = new HashSet<>();
-
+  private List<String> urls = new ArrayList<>();
+  
   public User() {
   }
 
-  public Set<String> getUrlsRss() {
-    return Collections.unmodifiableSet(this.urls);
+  public List<String> getUrlsRss() {
+    return Collections.unmodifiableList(this.urls);
   }
 
   public boolean removeUrlRss(String url) {

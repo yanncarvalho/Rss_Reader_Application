@@ -1,5 +1,6 @@
 package br.com.yann.rssreader.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -25,7 +26,7 @@ public class RssUrlController {
   @Path("findAll")
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response findAllRssByUser(@HeaderParam("Authorization") String token){
-    Set<String> rss = service.findAll(token.substring("Bearer ".length()));
+    List<String> rss = service.findAll(token.substring("Bearer ".length()));
     return Response.ok(rss).build();
   }
 
