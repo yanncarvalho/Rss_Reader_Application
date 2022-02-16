@@ -12,7 +12,6 @@ public class Pagination<T> {
   private boolean last; //se é ultima pagina
   private boolean first; //se é primeira pagina
   private int page; //paginaAtual
-  private int size; //quantidade por pagina -- campo pageble
   private int totalElements; //quantidade de elementos
   private int numberElements; //numero de elementos na pagina
   private int totalPage; //total de paginas
@@ -59,12 +58,7 @@ public class Pagination<T> {
   public void setPage(int page) {
     this.page = page;
   }
-  public int getSize() {
-    return size;
-  }
-  public void setSize(int size) {
-    this.size = size;
-  }
+
   public int getTotalElements() {
     return totalElements;
   }
