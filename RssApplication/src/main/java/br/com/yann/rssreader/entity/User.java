@@ -2,9 +2,7 @@ package br.com.yann.rssreader.entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -30,7 +28,7 @@ public class User {
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name="rss_urls", joinColumns = @JoinColumn(name="id") )
   private List<String> urls = new ArrayList<>();
-  
+
   public User() {
   }
 
@@ -46,7 +44,7 @@ public class User {
     return this.urls.contains(url);
   }
 
-  public boolean containsUrlRssAll(Set<String> urls) {
+  public boolean containsAllUrlRss(List<String> urls) {
     return this.urls.containsAll(urls);
   }
 
@@ -54,11 +52,11 @@ public class User {
     return this.urls.add(url);
   }
 
-  public boolean addUrlRssAll (Set<String> urls){
+  public boolean addAllUrlRss (List<String> urls){
     return this.urls.addAll(urls);
   }
 
-  public boolean removeUrlsRssAll (Set<String> urls){
+  public boolean removeAllUrlsRss (List<String> urls){
     return this.urls.removeAll(urls);
   }
 
@@ -134,15 +132,5 @@ public class User {
       return false;
     return true;
   }
-
-  @Override
-  public String toString() {
-    return "User [admin=" + admin + ", id=" + id + ", name=" + name + ", password=" + password + ", rss=" + urls
-        + ", username=" + username + "]";
-  }
-
-
-
-
 
 }

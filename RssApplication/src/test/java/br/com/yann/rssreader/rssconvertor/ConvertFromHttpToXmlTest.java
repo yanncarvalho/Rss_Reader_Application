@@ -15,7 +15,6 @@ import br.com.yann.rssreader.util.RssConvertor;
 
 public class ConvertFromHttpToXmlTest {
 
-  RssConvertor convertor = new RssConvertor();
 
   @Test
   public void itMustConvertMoreThan1kRssLinksAndCheckIfTheMostImportantAtrribuitsInEachOneAreNotNull() {
@@ -35,7 +34,7 @@ public class ConvertFromHttpToXmlTest {
             System.out.println(String.format("%.2f%% (%d/%d) - %s",percentage.get(),  counter.getAndIncrement(), size, url));
             try {
 
-              Rss rss = convertor.getRss(url);
+              Rss rss = RssConvertor.getRss(url);
               Assert.assertNotNull(rss.getTitle());
 
             } catch (Exception e) {

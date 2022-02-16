@@ -17,7 +17,7 @@ import br.com.yann.rssreader.entity.User;
 
 @Named("Rss")
 @RequestScoped
-public class RssDao extends AuthAllUsersDao {
+public class RssDao extends AuthAnyUserDao {
 
   @PersistenceContext(name="rssreader")
   private EntityManager manager;

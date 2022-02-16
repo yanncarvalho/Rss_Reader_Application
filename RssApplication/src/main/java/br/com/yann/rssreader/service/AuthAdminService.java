@@ -6,6 +6,7 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.yann.rssreader.auth.EncryptPassword;
 import br.com.yann.rssreader.data.AuthAdminDao;
 import br.com.yann.rssreader.entity.User;
 
@@ -16,12 +17,16 @@ public class AuthAdminService {
   @Named("AuthAdmin")
   private AuthAdminDao dao;
 
+  @Inject
+  private EncryptPassword crypto;
+
 
   public List<User> findAll() {
     return dao.findAll();
   }
-
+  //TODO ajeitar
   public void updateAnyUser (User user){
+    user.setPassword(crypto.hash(user.getPassword()));
     dao.update(user);
   }
 

@@ -1,7 +1,6 @@
 package br.com.yann.rssreader.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -33,7 +32,7 @@ public class RssUrlController {
   @DELETE
   @Path("delete")
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response deleteRss(@HeaderParam("Authorization") String token, Set<String> rssUrls){
+  public Response deleteRss(@HeaderParam("Authorization") String token, List<String> rssUrls){
      service.deleteRss(token.substring("Bearer ".length()), rssUrls);
     return Response.ok().build();
   }
@@ -41,14 +40,14 @@ public class RssUrlController {
   @DELETE
   @Path("deleteAll")
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response deleteAllRss(@HeaderParam("Authorization") String token, Set<String> rssUrls){
+  public Response deleteAllRss(@HeaderParam("Authorization") String token, List<String> rssUrls){
      service.deleteAllRss(token.substring("Bearer ".length()));
     return Response.ok().build();
   }
   @POST
   @Path("add")
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response addRss(@HeaderParam("Authorization") String token, Set<String> rssUrls){
+  public Response addRss(@HeaderParam("Authorization") String token, List<String> rssUrls){
      service.addRss(token.substring("Bearer ".length()), rssUrls);
     return Response.ok().build();
   }
@@ -57,8 +56,8 @@ public class RssUrlController {
   @Path("hasUrl")
   @Consumes(value = MediaType.APPLICATION_JSON)
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response hasRss(@HeaderParam("Authorization") String token, Set<String> rssUrls){
-    Set<String> rssHad = service.hasRss(token.substring("Bearer ".length()), rssUrls);
+  public Response hasRss(@HeaderParam("Authorization") String token, List<String> rssUrls){
+    List<String> rssHad = service.hasRss(token.substring("Bearer ".length()), rssUrls);
     return Response.ok(rssHad).build();
   }
 

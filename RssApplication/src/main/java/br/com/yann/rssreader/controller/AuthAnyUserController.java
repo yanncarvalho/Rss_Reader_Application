@@ -13,14 +13,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.yann.rssreader.entity.User;
-import br.com.yann.rssreader.service.AuthAllUsersService;
+import br.com.yann.rssreader.service.AuthAnyUserService;
 
 
 @Path("auth")
-public class AuthAllUsersController {
+public class AuthAnyUserController {
 
   @Inject
-  private AuthAllUsersService service;
+  private AuthAnyUserService service;
 
   @GET
   @Path("find")

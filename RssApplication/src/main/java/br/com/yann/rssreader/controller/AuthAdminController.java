@@ -7,8 +7,8 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -31,25 +31,25 @@ public class AuthAdminController{
   }
 
   @GET
-  @Path("findByusername")
+  @Path("findByUsername/{username}")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response findAnyUserByLogin(@QueryParam("username") String username){
+  public Response findAnyUserByLogin(@PathParam("username") String username){
     User user = service.findAnyUserByUsername(username);
     return Response.ok(user).build();
   }
 
   @PUT
-  @Path("update")
+  @Path("update/{username}")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response updateAnyUser(@QueryParam("username") String username, User user){
+  public Response updateAnyUser(@PathParam("username") String username, User user){
     service.updateAnyUser(user);
     return Response.ok().build();
   }
 
   @DELETE
-  @Path("delete")
+  @Path("delete/{username}")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response deleteAnyUser(@QueryParam("username") String username){
+  public Response deleteAnyUser(@PathParam("username") String username){
     service.deleteAnyUser(username);
     return Response.ok().build();
   }

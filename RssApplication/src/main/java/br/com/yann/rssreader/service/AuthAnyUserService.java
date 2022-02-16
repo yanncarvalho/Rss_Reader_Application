@@ -9,17 +9,17 @@ import javax.inject.Named;
 
 import br.com.yann.rssreader.auth.EncryptPassword;
 import br.com.yann.rssreader.auth.JWTToken;
-import br.com.yann.rssreader.data.AuthAllUsersDao;
+import br.com.yann.rssreader.data.AuthAnyUserDao;
 import br.com.yann.rssreader.entity.User;
 
 
 @Stateful
 @Default
-public class AuthAllUsersService {
+public class AuthAnyUserService {
 
   @Inject
-  @Named("AuthAllUsers")
-  private  AuthAllUsersDao dao;
+  @Named("AuthAnyUser")
+  private  AuthAnyUserDao dao;
 
   @Inject
   private JWTToken tokenJWT;

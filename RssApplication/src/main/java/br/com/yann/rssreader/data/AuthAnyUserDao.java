@@ -9,16 +9,13 @@ import javax.persistence.Query;
 import br.com.yann.rssreader.entity.User;
 
 @Stateless
-@Named("AuthAllUsers")
-public class AuthAllUsersDao {
+@Named("AuthAnyUser")
+public class AuthAnyUserDao {
 
   @PersistenceContext(name="rssreader")
   private EntityManager manager;
 
   public void save(User user) {
-    user.addUrlRss("https://developers.google.com/web/updates/rss.xml");
-    user.addUrlRss("https://www.hobo-web.co.uk/feed/");
-    user.addUrlRss("http://feeds.feedburner.com/RachelNabors");
      manager.persist(user);
   }
 
@@ -36,7 +33,7 @@ public class AuthAllUsersDao {
     manager.remove(user);
   }
 
-
+  //TODO AJEITAR
   public void update(User user) {
     manager.merge(user);
     manager.flush();

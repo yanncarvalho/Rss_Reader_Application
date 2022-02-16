@@ -5,32 +5,26 @@ import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import javax.ejb.Stateful;
 
 import br.com.yann.rssreader.factory.RequestXmlFromHttpFactory;
 import br.com.yann.rssreader.model.Rss;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
-@Stateless
-public class RssConvertor {
+@Stateful
+public  class RssConvertor {
 
-  private RequestXmlFromHttpFactory factory;
-  private JAXBContext context;
+  private static RequestXmlFromHttpFactory factory = new RequestXmlFromHttpFactory();;
+  private static JAXBContext context;
 
 
-   @Inject
-   public RssConvertor(){
-     this.factory = new RequestXmlFromHttpFactory();
-   }
-
-  private String prepareURI(String uri) {
+  private static String prepareURI(String uri) {
     return uri.replace(" ", "");
   }
 
   //TODO melhorar isso
-  private String treatXml(String treatable) {
+  private static String treatXml(String treatable) {
     ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(treatable);
     String utf8EncodedString = StandardCharsets.UTF_8.decode(byteBuffer).toString();
 
@@ -40,7 +34,7 @@ public class RssConvertor {
 
   }
 
-  public Rss getRss(String url)  {
+  public static Rss getRss(String url)  {
       try {
         context = JAXBContext.newInstance(Rss.class);
         String treatable = prepareURI(url);
@@ -56,18 +50,6 @@ public class RssConvertor {
       }
      return null;
   }
-
-  public void main(String[] args)   {
-
-    String url = "https://www.fashionlady.in/category/beauty-tips/feed";
-
-
-    Rss rss = getRss(url);
-    System.out.println(rss.getLink());
-    System.out.println(rss.getTitle());
-    System.out.println(rss.getDescription());
-  }
-
 }
 
 

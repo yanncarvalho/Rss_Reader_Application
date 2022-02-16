@@ -12,7 +12,7 @@ import br.com.yann.rssreader.entity.User;
 
 @Stateless
 @Named("AuthAdmin")
-public class AuthAdminDao  extends AuthAllUsersDao{
+public class AuthAdminDao  extends AuthAnyUserDao{
 
   @PersistenceContext(name="rssreader")
   private EntityManager manager;

@@ -1,7 +1,6 @@
 package br.com.yann.rssreader.service;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,15 +23,15 @@ public class RssUrlService {
     return user.getUrlsRss();
   }
 
-  public void deleteRss(String token, Set<String> rssUrls) {
+  public void deleteRss(String token, List<String> rssUrls) {
     User user  = dao.findByUsername((String)tokenJWT.decode(token).get("username"));
-    user.removeUrlsRssAll(rssUrls);
+    user.removeAllUrlsRss(rssUrls);
     dao.deleteRss(user);
   }
 
-  public void addRss(String token, Set<String> rssUrls) {
+  public void addRss(String token, List<String> rssUrls) {
     User user  = dao.findByUsername((String)tokenJWT.decode(token).get("username"));
-    user.addUrlRssAll(rssUrls);
+    user.addAllUrlRss(rssUrls);
     dao.addRss(user);
   }
 
@@ -42,7 +41,7 @@ public class RssUrlService {
     dao.deleteRss(user);
   }
 
-  public Set<String> hasRss(String token, Set<String> rssUrls) {
+  public List<String> hasRss(String token, List<String> rssUrls) {
      User user  = dao.findByUsername((String)tokenJWT.decode(token).get("username"));
       rssUrls.retainAll(user.getUrlsRss());
     return rssUrls;
