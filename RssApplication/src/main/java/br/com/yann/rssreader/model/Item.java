@@ -1,4 +1,4 @@
-package br.com.yann.rssreader.model.vo;
+package br.com.yann.rssreader.model;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;

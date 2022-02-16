@@ -1,5 +1,6 @@
 package br.com.yann.rssreader.entity;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OrderColumn;
 
 @Entity(name = "users")
 public class User {
@@ -27,27 +27,43 @@ public class User {
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name="rss_urls", joinColumns = @JoinColumn(name="id") )
-  @OrderColumn
   private Set<String> urls = new HashSet<>();
 
   public User() {
   }
 
   public Set<String> getUrlsRss() {
-    return this.urls;
+    return Collections.unmodifiableSet(this.urls);
   }
+
   public boolean removeUrlRss(String url) {
     return this.urls.remove(url);
   }
+
+  public boolean containsUrlRss(String url) {
+    return this.urls.contains(url);
+  }
+
+  public boolean containsUrlRssAll(Set<String> urls) {
+    return this.urls.containsAll(urls);
+  }
+
   public boolean addUrlRss(String url) {
     return this.urls.add(url);
   }
+
   public boolean addUrlRssAll (Set<String> urls){
     return this.urls.addAll(urls);
   }
+
   public boolean removeUrlsRssAll (Set<String> urls){
     return this.urls.removeAll(urls);
   }
+
+  public void cleanUrlsRss() {
+     this.urls.clear();
+  }
+
   public boolean isAdmin(){
     return this.admin;
   }
@@ -122,6 +138,8 @@ public class User {
     return "User [admin=" + admin + ", id=" + id + ", name=" + name + ", password=" + password + ", rss=" + urls
         + ", username=" + username + "]";
   }
+
+
 
 
 

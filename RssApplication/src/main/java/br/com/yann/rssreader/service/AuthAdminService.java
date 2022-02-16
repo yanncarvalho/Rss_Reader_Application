@@ -14,7 +14,7 @@ public class AuthAdminService {
 
   @Inject
   @Named("AuthAdmin")
-  AuthAdminDao dao;
+  private AuthAdminDao dao;
 
 
   public List<User> findAll() {

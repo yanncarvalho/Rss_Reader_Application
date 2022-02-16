@@ -20,12 +20,12 @@ import br.com.yann.rssreader.service.AuthAllUsersService;
 public class AuthAllUsersController {
 
   @Inject
-  AuthAllUsersService service;
+  private AuthAllUsersService service;
 
   @GET
-  @Path("findUser")
+  @Path("find")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response findUser(@HeaderParam("Authorization") String token){
+  public Response find(@HeaderParam("Authorization") String token){
     User user = service.find(token.substring("Bearer ".length()));
     if(user == null)
         return Response.status(404).build();
@@ -62,7 +62,6 @@ public class AuthAllUsersController {
     service.delete(token.substring("Bearer ".length()));
   return Response.ok().build();
   }
-
 
   @PUT
   @Path("update")

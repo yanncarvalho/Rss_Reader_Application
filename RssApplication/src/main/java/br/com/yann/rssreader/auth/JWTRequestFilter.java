@@ -16,7 +16,7 @@ import javax.ws.rs.ext.Provider;
 public class JWTRequestFilter implements ContainerRequestFilter {
 
   @Inject
-  JWTToken tokenJWT;
+  private JWTToken tokenJWT;
 
   //TODO private static final Pattern CHALLENGE_PATTERN = Pattern.compile("^Bearer *([^ ]+) *$", Pattern.CASE_INSENSITIVE);
   private boolean hasToBeAdmin(String path){

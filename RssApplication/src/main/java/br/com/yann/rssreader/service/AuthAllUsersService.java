@@ -19,13 +19,13 @@ public class AuthAllUsersService {
 
   @Inject
   @Named("AuthAllUsers")
-  AuthAllUsersDao dao;
+  private  AuthAllUsersDao dao;
 
   @Inject
-  JWTToken tokenJWT;
+  private JWTToken tokenJWT;
 
   @Inject
-  EncryptPassword crypto;
+  private EncryptPassword crypto;
 
   private boolean hasUsername(String username){
     return (dao.findByUsername(username) != null);

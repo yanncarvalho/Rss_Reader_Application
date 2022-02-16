@@ -20,7 +20,7 @@ import br.com.yann.rssreader.service.AuthAdminService;
 public class AuthAdminController{
 
   @Inject
-  AuthAdminService service;
+  private AuthAdminService service;
 
   @GET
   @Path("findAll")
@@ -31,7 +31,7 @@ public class AuthAdminController{
   }
 
   @GET
-  @Path("findByLogin")
+  @Path("findByusername")
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response findAnyUserByLogin(@QueryParam("username") String username){
     User user = service.findAnyUserByUsername(username);
@@ -53,9 +53,6 @@ public class AuthAdminController{
     service.deleteAnyUser(username);
     return Response.ok().build();
   }
-
-
-  //TODO UPDATE IS NOT WORKING
 
 
 }

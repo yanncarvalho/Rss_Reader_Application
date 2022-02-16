@@ -1,4 +1,4 @@
-package br.com.yann.rssreader.model.vo;
+package br.com.yann.rssreader.model;
 
 import java.util.ArrayList;
 import java.util.List;
