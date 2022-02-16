@@ -13,20 +13,20 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.yann.rssreader.entity.User;
-import br.com.yann.rssreader.service.AdminService;
+import br.com.yann.rssreader.service.AuthAdminService;
 
 
 @Path("auth/admin")
-public class AdminController{
+public class AuthAdminController{
 
   @Inject
-  AdminService service;
+  AuthAdminService service;
 
   @GET
-  @Path("listUsers")
+  @Path("findAll")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response listUsers(){
-    List<User> users = service.listUsers();
+  public Response findAll(){
+    List<User> users = service.findAll();
     return Response.ok(users).build();
   }
 
@@ -54,7 +54,7 @@ public class AdminController{
     return Response.ok().build();
   }
 
-  //FIXME VALIDAR RSS
+
   //TODO UPDATE IS NOT WORKING
 
 

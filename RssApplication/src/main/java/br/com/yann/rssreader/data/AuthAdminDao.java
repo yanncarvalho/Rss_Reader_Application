@@ -11,8 +11,8 @@ import javax.persistence.Query;
 import br.com.yann.rssreader.entity.User;
 
 @Stateless
-@Named("Admin")
-public class AdminDao  extends AllUsersDao{
+@Named("AuthAdmin")
+public class AuthAdminDao  extends AuthAllUsersDao{
 
   @PersistenceContext(name="rssreader")
   private EntityManager manager;

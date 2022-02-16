@@ -13,14 +13,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.yann.rssreader.entity.User;
-import br.com.yann.rssreader.service.AllUsersService;
+import br.com.yann.rssreader.service.AuthAllUsersService;
 
 
-@Path("auth/")
-public class AllUsersController {
+@Path("auth")
+public class AuthAllUsersController {
 
   @Inject
-  AllUsersService service;
+  AuthAllUsersService service;
 
   @GET
   @Path("findUser")
@@ -51,7 +51,7 @@ public class AllUsersController {
    String answer = service.save(user);
    if (answer == null || answer.isEmpty())
       return Response.status(404).build();
-  return Response.ok(answer).build();
+    return Response.ok(answer).build();
   }
 
   @DELETE
@@ -72,7 +72,5 @@ public class AllUsersController {
     String answer = service.update(token.substring("Bearer ".length()), user);
   return Response.ok(answer).build();
   }
-
-
 
 }

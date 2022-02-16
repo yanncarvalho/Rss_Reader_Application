@@ -18,9 +18,9 @@ public class JWTRequestFilter implements ContainerRequestFilter {
   @Inject
   JWTToken tokenJWT;
 
-  //private static final Pattern CHALLENGE_PATTERN = Pattern.compile("^Bearer *([^ ]+) *$", Pattern.CASE_INSENSITIVE);
+  //TODO private static final Pattern CHALLENGE_PATTERN = Pattern.compile("^Bearer *([^ ]+) *$", Pattern.CASE_INSENSITIVE);
   private boolean hasToBeAdmin(String path){
-      return (path.contains("auth/admin"));
+      return (path.contains("/admin"));
   }
   private boolean hasToHaveToken(String path){
     return !(path.contains("auth/login")) && !(path.contains("auth/save")) ;

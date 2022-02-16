@@ -9,16 +9,17 @@ import javax.inject.Named;
 
 import br.com.yann.rssreader.auth.EncryptPassword;
 import br.com.yann.rssreader.auth.JWTToken;
-import br.com.yann.rssreader.data.AllUsersDao;
+import br.com.yann.rssreader.data.AuthAllUsersDao;
 import br.com.yann.rssreader.entity.User;
+
 
 @Stateful
 @Default
-public class AllUsersService {
+public class AuthAllUsersService {
 
   @Inject
-  @Named("allUser")
-  AllUsersDao dao;
+  @Named("AuthAllUsers")
+  AuthAllUsersDao dao;
 
   @Inject
   JWTToken tokenJWT;
@@ -32,7 +33,7 @@ public class AllUsersService {
 
   public String save (User user){
     if (hasUsername(user.getUsername()))
-      return null;
+        return null;
     user.setPassword(crypto.hash(user.getPassword()));
     dao.save(user);
     return tokenJWT.encode(user);
@@ -50,20 +51,20 @@ public class AllUsersService {
     Map<String, Object> decode = tokenJWT.decode(token);
     if (decode == null)
       return null;
-    return dao.findByUsername((String)decode.get("login"));
+    return dao.findByUsername((String)decode.get("username"));
 
   }
 
 
   public void delete (String token){
     Map<String, Object> decode = tokenJWT.decode(token);
-    User findById = dao.findByUsername((String)decode.get("login"));
+    User findById = dao.findByUsername((String)decode.get("username"));
     dao.delete(findById);
   }
 
   public String update(String token, User user) {
     Map<String, Object> decode = tokenJWT.decode(token);
-    User findByUsername = dao.findByUsername((String)decode.get("login"));
+    User findByUsername = dao.findByUsername((String)decode.get("username"));
     if (!findByUsername.getUsername().equals(user.getUsername()) && hasUsername(user.getUsername()))
           return  null;
     user.setId(findByUsername.getId());
