@@ -13,7 +13,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.yann.rssreader.auth.JWTToken;
+import br.com.yann.rssreader.model.Rss;
+import br.com.yann.rssreader.model.MessageResponse;
 import br.com.yann.rssreader.service.RssUrlService;
+import br.com.yann.rssreader.util.RssConvertor;
 
 @Path("rss/url")
 public class RssUrlController {
@@ -59,5 +63,20 @@ public class RssUrlController {
   public Response hasRss(@HeaderParam("Authorization") String token, List<String> rssUrls){
     List<String> rssHad = service.hasRss(token.substring("Bearer ".length()), rssUrls);
     return Response.ok(rssHad).build();
+  }
+
+  @GET
+  @Path("teste")
+  @Produces(value = MediaType.APPLICATION_JSON)
+  public Response hasRss(){
+    // JWTToken token = new JWTToken();
+    Rss rss = RssConvertor.get("https://blogs.windows.com/msedgedev/feed/");
+
+    return Response.ok(MessageResponse.addMessage("rss",rss)).build();
+    // return response.sendElement("name", "ELEMENT")
+    //                .sendElement("token", "token")
+    //                .sendElement("rss", rss )
+    //                .ok()
+    //                .build();
   }
 }

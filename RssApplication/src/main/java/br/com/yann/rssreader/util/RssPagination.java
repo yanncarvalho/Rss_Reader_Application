@@ -5,8 +5,6 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.yann.rssreader.model.Rss;
@@ -34,7 +32,7 @@ public class RssPagination{
     this.offset = offset;
     this.page = page;
     this.size = size;
-    this.content = this.convertToContent(urls, page, size, offset);
+    this.setContent(this.convertToContent(urls, page, size, offset));
     this.totalElements = urls.size();
 
     if(offset > this.totalElements) {
@@ -45,6 +43,14 @@ public class RssPagination{
     }
     this.firstPage = (page == 0);
     this.lastPage = (page >= totalPages-1);
+  }
+
+  public List<Rss> getContent() {
+    return content;
+  }
+
+  public void setContent(List<Rss> content) {
+    this.content = content;
   }
 
   private List<Rss> convertToContent(List<String> urls, int page, int size, int offset){
