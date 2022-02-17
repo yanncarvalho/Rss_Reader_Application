@@ -34,7 +34,7 @@ public class ConvertFromHttpToXmlTest {
             System.out.println(String.format("%.2f%% (%d/%d) - %s",percentage.get(),  counter.getAndIncrement(), size, url));
             try {
 
-              Rss rss = RssConvertor.getRss(url);
+              Rss rss = RssConvertor.get(url);
               Assert.assertNotNull(rss.getTitle());
 
             } catch (Exception e) {

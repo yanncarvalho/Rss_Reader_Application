@@ -31,8 +31,11 @@ dependencies {
     implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
     implementation 'com.nimbusds:nimbus-jose-jwt:9.19'
     implementation 'org.glassfish.jersey.core:jersey-client:3.0.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
+
 
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:8.0.0'
+
 }
 
 application{

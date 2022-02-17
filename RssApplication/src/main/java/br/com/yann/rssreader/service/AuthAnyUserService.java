@@ -7,7 +7,7 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.yann.rssreader.auth.EncryptPassword;
+import br.com.yann.rssreader.auth.PasswordEncryption;
 import br.com.yann.rssreader.auth.JWTToken;
 import br.com.yann.rssreader.data.AuthAnyUserDao;
 import br.com.yann.rssreader.entity.User;
@@ -25,7 +25,7 @@ public class AuthAnyUserService {
   private JWTToken tokenJWT;
 
   @Inject
-  private EncryptPassword crypto;
+  private PasswordEncryption crypto;
 
   private boolean hasUsername(String username){
     return (dao.findByUsername(username) != null);

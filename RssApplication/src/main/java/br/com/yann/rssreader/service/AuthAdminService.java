@@ -6,7 +6,7 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.yann.rssreader.auth.EncryptPassword;
+import br.com.yann.rssreader.auth.PasswordEncryption;
 import br.com.yann.rssreader.data.AuthAdminDao;
 import br.com.yann.rssreader.entity.User;
 
@@ -18,7 +18,7 @@ public class AuthAdminService {
   private AuthAdminDao dao;
 
   @Inject
-  private EncryptPassword crypto;
+  private PasswordEncryption crypto;
 
 
   public List<User> findAll() {

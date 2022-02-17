@@ -60,7 +60,4 @@ public class RssUrlController {
     List<String> rssHad = service.hasRss(token.substring("Bearer ".length()), rssUrls);
     return Response.ok(rssHad).build();
   }
-
-
-
 }

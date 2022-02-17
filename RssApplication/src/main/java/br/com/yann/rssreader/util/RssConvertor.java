@@ -34,7 +34,7 @@ public  class RssConvertor {
 
   }
 
-  public static Rss getRss(String url)  {
+  public static Rss get(String url)  {
       try {
         context = JAXBContext.newInstance(Rss.class);
         String treatable = prepareURI(url);

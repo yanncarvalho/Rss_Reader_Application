@@ -3,19 +3,32 @@ package br.com.yann.rssreader.util;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import br.com.yann.rssreader.model.Rss;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+
+@JsonInclude(Include.NON_NULL)
 public class RssPagination{
 //TODO EXCEÇÕES
 
-  private int offset;
+  //TODO VER ISSO
+ // @JsonFormat(shape = Shape.STRING)
   private List<Rss> content;
   private int page;
   private int size;
-  private int totalElements;
-  private int totalPages;
-  private boolean lastPage;
+  private int offset;
   private boolean firstPage;
+  private boolean lastPage;
+  private int totalPages;
+  private int totalElements;
+
+
 
   public RssPagination(List<String> urls, int page, int size, int offset) {
     this.offset = offset;
@@ -51,19 +64,8 @@ public class RssPagination{
 
     return urls.subList(firstSublistIndex, lastSublistIndex)
                .stream()
-               .map(url -> RssConvertor.getRss(url))
+               .map(url -> RssConvertor.get(url))
                .collect(Collectors.toList());
-  }
-  public int getOffset() {
-    return offset;
-  }
-
-  public List<Rss> getContent() {
-    return content;
-  }
-
-  public void setContent(List<Rss> content) {
-    this.content = content;
   }
 
   public int getPage() {
@@ -74,29 +76,28 @@ public class RssPagination{
     return size;
   }
 
-  public int getTotalElements() {
-    return totalElements;
-  }
 
-  public int getTotalPages() {
-    return totalPages;
-  }
-
-  public boolean isLastPage() {
-    return lastPage;
+  public int getOffset() {
+    return offset;
   }
 
   public boolean isFirstPage() {
     return firstPage;
   }
 
-  @Override
-  public String toString() {
-    return "RssPagination [content=" + content + ", firstPage=" + firstPage + ", lastPage=" + lastPage + ", offset="
-        + offset + ", page=" + page + ", size=" + size + ", totalElements=" + totalElements + ", totalPages="
-        + totalPages + "]";
+
+  public boolean isLastPage() {
+    return lastPage;
   }
 
+
+  public int getTotalPages() {
+    return totalPages;
+  }
+
+  public int getTotalElements() {
+    return totalElements;
+  }
 
 
 }

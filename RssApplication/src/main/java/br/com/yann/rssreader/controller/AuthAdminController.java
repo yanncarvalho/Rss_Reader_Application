@@ -32,8 +32,8 @@ public class AuthAdminController{
 
   @GET
   @Path("findByUsername/{username}")
-  @Produces(value = MediaType.APPLICATION_JSON)
-  public Response findAnyUserByLogin(@PathParam("username") String username){
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response findAnyUserByUserName(@PathParam("username") String username){
     User user = service.findAnyUserByUsername(username);
     return Response.ok(user).build();
   }

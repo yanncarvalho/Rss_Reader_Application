@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public class EncryptPassword {
+public class PasswordEncryption {
 
   public static final String ID = "$31$";
 
@@ -28,13 +28,13 @@ public class EncryptPassword {
 
   private final int cost;
 
-  public EncryptPassword()
+  public PasswordEncryption()
   {
     this(DEFAULT_COST);
   }
 
 
-  public EncryptPassword(int cost)
+  public PasswordEncryption(int cost)
   {
     iterations(cost);
     this.cost = cost;
