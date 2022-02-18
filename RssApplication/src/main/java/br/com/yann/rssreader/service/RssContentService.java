@@ -19,16 +19,13 @@ public class RssContentService {
   @Inject
   private JWTToken tokenJWT;
 
-
   public RssPagination getUserRssContents(String token, int page, int size, int offset) {
     User user  = dao.findByUsername((String)tokenJWT.decode(token).get("username"));
     return new RssPagination (user.getUrlsRss(), page, size, offset);
   }
 
-
   public RssPagination convertRssUrls(List<String> urls, int page, int size, int offset) {
      return new RssPagination (urls, page, size, offset);
   }
-
 
 }

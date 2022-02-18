@@ -15,24 +15,17 @@ import javax.crypto.spec.PBEKeySpec;
 public class PasswordEncryption {
 
   public static final String ID = "$31$";
-
   public static final int DEFAULT_COST = 16;
-
   private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
-
   private static final int SIZE = 128;
-
   private static final Pattern layout = Pattern.compile("\\$31\\$(\\d\\d?)\\$(.{43})");
-
   private final SecureRandom random;
-
   private final int cost;
 
   public PasswordEncryption()
   {
     this(DEFAULT_COST);
   }
-
 
   public PasswordEncryption(int cost)
   {
@@ -60,7 +53,6 @@ public class PasswordEncryption {
     Base64.Encoder enc = Base64.getUrlEncoder().withoutPadding();
     return ID + cost + '$' + enc.encodeToString(hash);
   }
-
 
   public boolean authenticate(String password, String token)
   {
@@ -91,5 +83,7 @@ public class PasswordEncryption {
       throw new IllegalStateException("Invalid SecretKeyFactory", ex);
     }
   }
+
+
 
 }

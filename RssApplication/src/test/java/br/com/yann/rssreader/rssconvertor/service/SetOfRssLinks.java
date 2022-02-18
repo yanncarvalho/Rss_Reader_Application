@@ -10,7 +10,7 @@ public class SetOfRssLinks {
   final private String file;
 
   public SetOfRssLinks() {
-    this.file = "./src/test/java/br/com/yann/servlet/rssreader/RssConvertor/service/source/RssLinks";
+    this.file = "./src/test/java/br/com/yann/servlet/rssreader/RssConvertor/service/resources/RssLinks";
   }
 
   public Set<String> getSet() {
@@ -23,9 +23,9 @@ public class SetOfRssLinks {
 
       while ((xmlUrl = reader.readLine()) != null) {
         xmls.add(xmlUrl);
-      
+
       }
-     
+
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -2,8 +2,6 @@ package br.com.yann.rssreader.model;
 
 
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -13,16 +11,13 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-//TODO ORGANZIZAR JSON
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@JsonInclude(Include.NON_NULL)
 @JsonTypeName("rss")
 @JsonTypeInfo(include=As.WRAPPER_OBJECT, use=Id.NAME)
 public class Rss {
 
   public Channel channel;
-
 
   public Rss() {
   }
@@ -39,6 +34,7 @@ public class Rss {
   public String getTitle() {
     return channel.getTitle();
   }
+  
   public String getDescription() {
     return channel.getDescription();
   }

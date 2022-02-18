@@ -4,19 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.yann.rssreader.model.Rss;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-
-@JsonInclude(Include.NON_NULL)
 public class RssPagination{
-//TODO EXCEÇÕES
 
-  //TODO VER ISSO
- // @JsonFormat(shape = Shape.STRING)
+
   private List<Rss> content;
   private int page;
   private int size;
@@ -26,8 +20,7 @@ public class RssPagination{
   private int totalPages;
   private int totalElements;
 
-
-
+  //TODO EXCEÇÕES - SE ELEMENTOS NEGATIVOS
   public RssPagination(List<String> urls, int page, int size, int offset) {
     this.offset = offset;
     this.page = page;

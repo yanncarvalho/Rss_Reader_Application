@@ -36,14 +36,14 @@ public class AuthAnyUserService {
         return null;
     user.setPassword(crypto.hash(user.getPassword()));
     dao.save(user);
-    return tokenJWT.encode(user);
+    return tokenJWT.hash(user);
   }
 
   public String login (User user){
     User userFound = dao.findByUsername(user.getUsername());
     //TODO CLASSE SEPRADA PARA VALIDAÇÃO?
     if (userFound != null && userFound.equals(user) && crypto.authenticate(user.getPassword(), userFound.getPassword()))
-      return tokenJWT.encode(userFound);
+      return tokenJWT.hash(userFound);
    return null;
   }
 
@@ -52,7 +52,6 @@ public class AuthAnyUserService {
     if (decode == null)
       return null;
     return dao.findByUsername((String)decode.get("username"));
-
   }
 
 
@@ -61,7 +60,7 @@ public class AuthAnyUserService {
     User findById = dao.findByUsername((String)decode.get("username"));
     dao.delete(findById);
   }
-
+  //FIXME TEM QUE ATUALIZAR OS VALORES NA MAO
   public String update(String token, User user) {
     Map<String, Object> decode = tokenJWT.decode(token);
     User findByUsername = dao.findByUsername((String)decode.get("username"));
@@ -70,6 +69,6 @@ public class AuthAnyUserService {
     user.setId(findByUsername.getId());
     user.setPassword(crypto.hash(user.getPassword()));
     dao.update(user);
-    return tokenJWT.encode(user);
+    return tokenJWT.hash(user);
   }
 }

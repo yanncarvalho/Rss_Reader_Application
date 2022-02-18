@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import br.com.yann.rssreader.entity.User;
 import br.com.yann.rssreader.service.AuthAdminService;
 
-
+//TODO ERROR? @onError
 @Path("auth/admin")
 public class AuthAdminController{
 
@@ -53,7 +53,6 @@ public class AuthAdminController{
     service.deleteAnyUser(username);
     return Response.ok().build();
   }
-
 
 }
 

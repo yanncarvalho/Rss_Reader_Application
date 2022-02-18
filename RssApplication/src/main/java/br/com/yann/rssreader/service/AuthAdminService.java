@@ -24,7 +24,7 @@ public class AuthAdminService {
   public List<User> findAll() {
     return dao.findAll();
   }
-  //TODO ajeitar
+  //TODO ajeitar O ATUALIZAR TEM QUE TER OS VALORES DO USUARIO SETADOS
   public void updateAnyUser (User user){
     user.setPassword(crypto.hash(user.getPassword()));
     dao.update(user);
