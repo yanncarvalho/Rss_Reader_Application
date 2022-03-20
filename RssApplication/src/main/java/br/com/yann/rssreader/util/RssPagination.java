@@ -20,7 +20,6 @@ public class RssPagination{
   private int totalPages;
   private int totalElements;
 
-  //TODO EXCEÇÕES - SE ELEMENTOS NEGATIVOS
   public RssPagination(List<String> urls, int page, int size, int offset) {
     this.offset = offset;
     this.page = page;

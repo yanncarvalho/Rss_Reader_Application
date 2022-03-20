@@ -28,7 +28,6 @@ public class AuthAnyUserDao {
     return (User) query.getSingleResult();
   }
 
-
   public void delete(User user) {
     manager.remove(user);
   }

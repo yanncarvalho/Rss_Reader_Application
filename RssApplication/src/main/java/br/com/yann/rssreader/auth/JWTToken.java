@@ -64,7 +64,6 @@ public class JWTToken {
 
       JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                                                 .claim("username", user.getUsername())
-                                                .claim("isAdmin", user.isAdmin())
                                                 .expirationTime(new Date(new Date().getTime() + 60 * 1000))
                                                 .build();
 
@@ -82,18 +81,20 @@ public class JWTToken {
     return null;
 
   }
-  private boolean isTokenValied (String token, byte[] key) throws ParseException, JOSEException{
+
+  private boolean isTokenValid (String token, byte[] key) throws ParseException, JOSEException{
     JWSObject jwsObject = JWSObject.parse(token);
     JWSVerifier verifier = new MACVerifier(key);
      return jwsObject.verify(verifier);
   }
+
   public Map<String, Object> decode (String token) {
 
       try {
 
          Map<String, Object> map = JWTParser.parse(token).getJWTClaimsSet().toJSONObject();
 
-        if (isTokenValied(token, this.PRIVATE_KEY))
+        if (isTokenValid(token, this.PRIVATE_KEY))
           return map;
       } catch (ParseException | JOSEException e) {
         return null;

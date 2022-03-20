@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.yann.rssreader.entity.User;
+import br.com.yann.rssreader.model.MessageResponse;
 import br.com.yann.rssreader.service.AuthAdminService;
 
 //TODO ERROR? @onError
@@ -21,6 +22,9 @@ public class AuthAdminController{
 
   @Inject
   private AuthAdminService service;
+
+  @Inject
+  private MessageResponse messageResponse;
 
   @GET
   @Path("findAll")

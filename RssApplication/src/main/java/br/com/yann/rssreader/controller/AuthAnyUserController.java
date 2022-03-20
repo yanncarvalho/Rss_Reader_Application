@@ -1,5 +1,7 @@
 package br.com.yann.rssreader.controller;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -11,8 +13,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import br.com.yann.rssreader.auth.JWTToken;
 import br.com.yann.rssreader.entity.User;
+import br.com.yann.rssreader.model.MessageResponse;
 import br.com.yann.rssreader.service.AuthAnyUserService;
 
 
@@ -20,16 +25,29 @@ import br.com.yann.rssreader.service.AuthAnyUserService;
 public class AuthAnyUserController {
 
   @Inject
+  private JWTToken tokenJWT;
+
+  @Inject
+  private MessageResponse messageResponse;
+
+  @Inject
   private AuthAnyUserService service;
+
+
 
   @GET
   @Path("find")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response find(@HeaderParam("Authorization") String token){
-    User user = service.find(token.substring("Bearer ".length()));
+  public Response find(@HeaderParam("username") String username){
+
+
+    User user = service.find(username);
     if(user == null)
-        return Response.status(404).build();
-    return Response.ok(user).build();
+        return Response.status(Status.NOT_FOUND).build();
+
+    return Response.status(Status.OK)
+                    .entity(user)
+                    .build();
   }
 
   @POST
@@ -37,10 +55,20 @@ public class AuthAnyUserController {
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response login(User user){
-    String answer = service.login(user);
-    if(answer == null || answer.isEmpty())
-      return Response.status(404).build();
-    return Response.ok(answer).build();
+    boolean hasUser = service.hasUser(user);
+
+
+    if(hasUser){
+  
+
+      return Response.status(Status.OK)
+                       .entity(user)
+                       .build();
+    } else {
+
+      return Response.status(Status.NOT_FOUND).build();
+    }
+
   }
 
   @POST
@@ -48,28 +76,33 @@ public class AuthAnyUserController {
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response save(User user){
-   String answer = service.save(user);
-   if (answer == null || answer.isEmpty())
-      return Response.status(404).build();
-    return Response.ok(answer).build();
+    if (service.hasUsername(user.getUsername()))
+        return Response.status(Status.CONFLICT)
+                       .entity(messageResponse.error("Username already exists"))
+                       .build();
+    service.save(user);
+    return Response.status(Status.CREATED).build();
   }
 
   @DELETE
   @Path("delete")
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response delete(@HeaderParam("Authorization") String token){
-    service.delete(token.substring("Bearer ".length()));
-  return Response.ok().build();
+  public Response delete(@HeaderParam("username") String username){
+    service.delete(username);
+  return Response.status(Status.OK).build();
   }
 
   @PUT
   @Path("update")
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response updade(@HeaderParam("Authorization") String token, User user){
-    String answer = service.update(token.substring("Bearer ".length()), user);
-  return Response.ok(answer).build();
+  public Response updade(@HeaderParam("username") String username, User user){
+    User answerUser = service.update(username, user);
+
+  return Response.status(Status.OK)
+                 .entity(answerUser)
+                 .build();
   }
 
 }

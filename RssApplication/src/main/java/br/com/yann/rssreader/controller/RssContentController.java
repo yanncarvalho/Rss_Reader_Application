@@ -26,8 +26,8 @@ public class RssContentController {
   @GET
   @Path("getUserContents")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response getContents(@HeaderParam("Authorization") String token, @QueryParam("page")  int page, @QueryParam("size") @DefaultValue("10") int size, @QueryParam ("offset") int offset){
-    RssPagination rssPage = service.getUserRssContents(token.substring("Bearer ".length()), page, size, offset);
+  public Response getContents(@HeaderParam("username") String username, @QueryParam("page")  int page, @QueryParam("size") @DefaultValue("10") int size, @QueryParam ("offset") int offset){
+    RssPagination rssPage = service.getUserRssContents(username, page, size, offset);
 
     return Response.ok(rssPage).build();
   }
