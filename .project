@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>RSS Reader</name>
+	<name>RSS_Reader</name>
 	<comment>Project Rss Reader created by Buildship.</comment>
 	<projects>
 		<project>app</project>

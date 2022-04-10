@@ -1,3 +1,3 @@
 
-rootProject.name = 'RSS Reader'
+rootProject.name = 'RSS_Reader'
 include('RssApplication')
