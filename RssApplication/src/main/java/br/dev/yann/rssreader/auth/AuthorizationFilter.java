@@ -1,22 +1,26 @@
 package br.dev.yann.rssreader.auth;
 
-import java.io.IOException;
-import java.util.Objects;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
-import br.dev.yann.rssreader.entity.User;
+import br.dev.yann.rssreader.annotations.Authorization;
 import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAnyUserService;
 
+
 @Provider
-@Priority(200)
+@Priority(100)
+@Authorization
 public class AuthorizationFilter implements ContainerRequestFilter {
 
   @Inject
@@ -25,49 +29,45 @@ public class AuthorizationFilter implements ContainerRequestFilter {
   @Inject
   private AuthAnyUserService service;
 
-  private boolean hasToBeAdmin(String path){
-      return (path.startsWith("auth/admin"));
-  }
-  private boolean hasToHaveAuthentication(String path){
-    return !(path.startsWith("auth/login")) && !(path.startsWith("auth/save")) ;
-  }
+  @Inject
+  private JWTToken tokenJWT;
+  private final Pattern pattern = Pattern.compile("Bearer\\s\\w*.\\w*.\\w*");
 
   @Override
-  public void filter(ContainerRequestContext requestContext) throws IOException {
+  public void filter(ContainerRequestContext request) {
 
-    System.out.println("AuthorizationFilter");
+    try{
 
-    String uriBase = requestContext.getUriInfo().getBaseUri().toString();
-    String path = requestContext.getUriInfo().getAbsolutePath().toString().substring(uriBase.length());
+      String authHeader = request.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-
-    if (hasToHaveAuthentication(path)){
-
-      if (requestContext.getHeaderString("NotValidToken") != null && requestContext.getHeaderString("NotValidToken").equals("true")){
-          requestContext.abortWith(Response.status(Status.UNAUTHORIZED)
-              .entity(messageResponse.error("Bearer token authentication not valid"))
-              .build());
-      }
-
-      String username = requestContext.getHeaderString("Authorization");
-      if (username == null || username.isBlank()){
-        requestContext.abortWith(Response.status(Status.NETWORK_AUTHENTICATION_REQUIRED)
-                                         .entity(messageResponse.error("Authentication required"))
-                                         .build());
-       }
-
-
-      if (hasToBeAdmin(path)){
-        User user = service.find(username);
-          if (Objects.nonNull(user) && !user.isAdmin()){
-            requestContext.abortWith(Response.status(Status.UNAUTHORIZED)
-                                              .entity(messageResponse.error("Administrator role required"))
-                                              .build());
+      if (authHeader == null){
+          throw new NotAuthorizedException("Token required");
         }
-      }
 
+        if(!pattern.matcher(authHeader).find()){
+           throw new NotAuthorizedException("Token authentication not valid");
+        }
+
+        String token = (authHeader.substring("Bearer ".length()));
+        Map<String, Object> decode = tokenJWT.decode(token);
+
+        if (decode == null) {
+           throw new NotAuthorizedException("Bearer token authentication not valid");
+        }
+
+        String username = decode.get("username").toString();
+
+        if(username == null || !service.hasUsername(username)){
+          throw new NotAuthorizedException("Bearer token authentication not valid");
+        }
+
+        request.getHeaders().add("username", username);
+
+    } catch (NotAuthorizedException e){
+      request.abortWith(Response.status(Status.UNAUTHORIZED)
+      .entity(messageResponse.error(e.getChallenges().get(0).toString()))
+      .build());
     }
   }
 
 }
-

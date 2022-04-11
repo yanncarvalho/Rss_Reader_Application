@@ -14,10 +14,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.dev.yann.rssreader.annotations.Authorization;
 import br.dev.yann.rssreader.service.RssContentService;
 import br.dev.yann.rssreader.util.RssPagination;
 
 @Path("rss")
+@Authorization
 public class RssContentController {
 
   @Inject

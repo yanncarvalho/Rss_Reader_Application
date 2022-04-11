@@ -31,7 +31,7 @@ public class AuthAnyUserService {
     dao.save(user);
   }
 
-  public boolean hasUser (User user){
+  public boolean isValidUser (User user){
     User userFound = dao.findByUsername(user.getUsername());
     //TODO CLASSE SEPRADA PARA VALIDAÇÃO?
     if (userFound != null && userFound.equals(user) && crypto.authenticate(user.getPassword(), userFound.getPassword()))

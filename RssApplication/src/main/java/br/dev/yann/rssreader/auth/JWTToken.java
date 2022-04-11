@@ -27,10 +27,9 @@ import com.nimbusds.jwt.SignedJWT;
 import org.bouncycastle.util.encoders.Base64;
 
 import br.dev.yann.rssreader.entity.User;
-//TODO REFATORAR
-//TODO LER SOBRE EXCEPTION
+
 //TODO VER TEMPO DE ACESSO
-//TODO VER SE USUARIO EXISTE NO BANCO
+
 @Singleton
 public class JWTToken {
 
@@ -38,34 +37,34 @@ public class JWTToken {
   private final Pattern pattern = Pattern.compile("^--BEGIN CERTIFICATE--[\\s\\S]*--END\\sCERTIFICATE+--$");
   private final String privateKeyPath = "./RssApplication/src/main/resources/privatekey.pem";
 
-
-  public JWTToken() throws FileNotFoundException, IOException  {
+  public JWTToken() throws FileNotFoundException, IOException {
 
     try (BufferedReader reader = new BufferedReader(new FileReader(privateKeyPath))) {
-        String result = reader.lines().collect(Collectors.joining());
-        if (pattern.matcher(result).find()){
-          PRIVATE_KEY = getPrivateKey(result);
-        } else  {
-             throw new IllegalArgumentException("privatekey.pem file not with properly content"+System.lineSeparator());
-        }
-    } //TODO throws FileNotFoundException(file not found), IOException(ffile que nor be open or reader)
+      String result = reader.lines().collect(Collectors.joining());
+      if (pattern.matcher(result).find()) {
+        PRIVATE_KEY = getPrivateKey(result);
+      } else {
+        throw new IllegalArgumentException("privatekey.pem file not with properly content ");
+      }
+    } // TODO throws FileNotFoundException(file not found), IOException(ffile que nor
+      // be open or reader)
   }
 
   private byte[] getPrivateKey(String result) {
     int firstIndexOfKey = "--BEGIN CERTIFICATE--".length();
     int lastIndexOfKey = result.lastIndexOf("--END CERTIFICATE--");
-    return Base64.decode(result.substring(firstIndexOfKey,lastIndexOfKey));
+    return Base64.decode(result.substring(firstIndexOfKey, lastIndexOfKey));
   }
 
-  public String hash (User user) {
+  public String getHash(User user) {
 
     try {
       JWSSigner signer = new MACSigner(this.PRIVATE_KEY);
 
       JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                                                .claim("username", user.getUsername())
-                                                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
-                                                .build();
+          .claim("username", user.getUsername())
+          .expirationTime(new Date(new Date().getTime() + 60 * 1000))
+          .build();
 
       SignedJWT signedJWT = new SignedJWT(
           new JWSHeader.Builder(JWSAlgorithm.HS256).build(),
@@ -74,34 +73,32 @@ public class JWTToken {
       signedJWT.sign(signer);
 
       return signedJWT.serialize();
-    } catch (JOSEException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    return null;
 
+    } catch (JOSEException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
-  private boolean isTokenValid (String token, byte[] key) throws ParseException, JOSEException{
+  private boolean isTokenValid(String token, byte[] key) throws ParseException, JOSEException {
     JWSObject jwsObject = JWSObject.parse(token);
     JWSVerifier verifier = new MACVerifier(key);
-     return jwsObject.verify(verifier);
+    return jwsObject.verify(verifier);
   }
 
-  public Map<String, Object> decode (String token) {
+  public Map<String, Object> decode(String token) {
 
-      try {
+    try {
 
-         Map<String, Object> map = JWTParser.parse(token).getJWTClaimsSet().toJSONObject();
+      Map<String, Object> map = JWTParser.parse(token).getJWTClaimsSet().toJSONObject();
 
-        if (isTokenValid(token, this.PRIVATE_KEY))
-          return map;
-      } catch (ParseException | JOSEException e) {
-        return null;
+      if (isTokenValid(token, this.PRIVATE_KEY)) {
+        return map;
       }
+
+    } catch (ParseException | JOSEException e) {
       return null;
-
-
+    }
+    return null;
   }
-
 }

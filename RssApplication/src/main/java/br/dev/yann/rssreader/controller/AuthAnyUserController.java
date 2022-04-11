@@ -1,7 +1,5 @@
 package br.dev.yann.rssreader.controller;
 
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,7 +13,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import br.dev.yann.rssreader.auth.JWTToken;
+import br.dev.yann.rssreader.annotations.JWTSerialization;
+import br.dev.yann.rssreader.annotations.Authorization;
 import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAnyUserService;
@@ -25,19 +24,15 @@ import br.dev.yann.rssreader.service.AuthAnyUserService;
 public class AuthAnyUserController {
 
   @Inject
-  private JWTToken tokenJWT;
-
-  @Inject
   private MessageResponse messageResponse;
 
   @Inject
   private AuthAnyUserService service;
 
-
-
   @GET
   @Path("find")
   @Produces(value = MediaType.APPLICATION_JSON)
+  @Authorization
   public Response find(@HeaderParam("username") String username){
 
 
@@ -45,27 +40,22 @@ public class AuthAnyUserController {
     if(user == null)
         return Response.status(Status.NOT_FOUND).build();
 
-    return Response.status(Status.OK)
-                    .entity(user)
-                    .build();
+    return Response.status(Status.OK).entity(user).build();
   }
 
   @POST
   @Path("login")
+  @JWTSerialization
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response login(User user){
-    boolean hasUser = service.hasUser(user);
+    boolean hasUser = service.isValidUser(user);
 
-
-    if(hasUser){
-
-
+   if(hasUser){
       return Response.status(Status.OK)
                        .entity(user)
                        .build();
     } else {
-
       return Response.status(Status.NOT_FOUND).build();
     }
 
@@ -86,6 +76,7 @@ public class AuthAnyUserController {
 
   @DELETE
   @Path("delete")
+  @Authorization
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response delete(@HeaderParam("username") String username){
@@ -95,6 +86,7 @@ public class AuthAnyUserController {
 
   @PUT
   @Path("update")
+  @Authorization
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response updade(@HeaderParam("username") String username, User user){

@@ -19,8 +19,7 @@ public class Rss {
 
   public Channel channel;
 
-  public Rss() {
-  }
+  public Rss() {}
 
   public Rss(Channel channel) {
     this.channel = channel;

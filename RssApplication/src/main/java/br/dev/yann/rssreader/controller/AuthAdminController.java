@@ -12,19 +12,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.dev.yann.rssreader.annotations.AdminAuthorization;
+import br.dev.yann.rssreader.annotations.Authorization;
 import br.dev.yann.rssreader.entity.User;
-import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAdminService;
 
 //TODO ERROR? @onError
 @Path("auth/admin")
+@Authorization
+@AdminAuthorization
 public class AuthAdminController{
 
   @Inject
   private AuthAdminService service;
-
-  @Inject
-  private MessageResponse messageResponse;
 
   @GET
   @Path("findAll")
