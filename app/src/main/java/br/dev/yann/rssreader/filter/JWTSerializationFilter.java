@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.auth;
+package br.dev.yann.rssreader.filter;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 
 import br.dev.yann.rssreader.annotation.JWTSerialization;
+import br.dev.yann.rssreader.auth.JWTToken;
 import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.model.MessageResponse;
 
@@ -20,17 +21,17 @@ public class JWTSerializationFilter implements ContainerResponseFilter{
   private MessageResponse messageResponse;
 
   @Inject
-  private JWTToken token;
+  private JWTToken jwt;
 
   @Override
   public void filter(ContainerRequestContext request, ContainerResponseContext response)
       throws IOException {
-        if (response.getEntity() instanceof User) {
-          String hash = token.getHash((User) response.getEntity());
+        if (response.getEntity() instanceof User user) {
+          String hash = jwt.getHash(user);
           response.setEntity(
               messageResponse.addMessage("access_token", hash)
                              .addMessage("token type", "Bearer")
-                             .addMessage("expires_in", token.decode(hash).get("exp"))
+                             .addMessage("expires_in", jwt.decode(hash).get("exp"))
                            );
 
         }

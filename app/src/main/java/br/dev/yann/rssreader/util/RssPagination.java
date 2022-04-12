@@ -10,7 +10,6 @@ import br.dev.yann.rssreader.model.Rss;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class RssPagination{
 
-
   private List<Rss> content;
   private int page;
   private int size;

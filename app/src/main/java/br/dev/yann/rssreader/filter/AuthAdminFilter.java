@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.auth;
+package br.dev.yann.rssreader.filter;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
@@ -8,15 +8,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
-import br.dev.yann.rssreader.annotation.AdminAuthorization;
+import br.dev.yann.rssreader.annotation.AdminAuthRequired;
 import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAdminService;
 
 
 @Provider
 @Priority(200)
-@AdminAuthorization
-public class AdminAuthorizationFilter implements ContainerRequestFilter {
+@AdminAuthRequired
+public class AuthAdminFilter implements ContainerRequestFilter {
 
   @Inject
   private MessageResponse messageResponse;

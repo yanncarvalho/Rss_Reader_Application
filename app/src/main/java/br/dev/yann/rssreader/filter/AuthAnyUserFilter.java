@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.auth;
+package br.dev.yann.rssreader.filter;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -13,15 +13,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
-import br.dev.yann.rssreader.annotation.Authorization;
+import br.dev.yann.rssreader.annotation.AuthRequired;
+import br.dev.yann.rssreader.auth.JWTToken;
 import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAnyUserService;
 
 
 @Provider
 @Priority(100)
-@Authorization
-public class AuthorizationFilter implements ContainerRequestFilter {
+@AuthRequired
+public class AuthAnyUserFilter implements ContainerRequestFilter {
 
   @Inject
   private MessageResponse messageResponse;
@@ -30,7 +31,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
   private AuthAnyUserService service;
 
   @Inject
-  private JWTToken tokenJWT;
+  private JWTToken jwt;
   private final Pattern pattern = Pattern.compile("Bearer\\s\\w*.\\w*.\\w*");
 
   @Override
@@ -48,9 +49,9 @@ public class AuthorizationFilter implements ContainerRequestFilter {
            throw new NotAuthorizedException("Token authentication not valid");
         }
 
-        String token = (authHeader.substring("Bearer ".length()));
-        
-        Map<String, Object> decode = tokenJWT.decode(token);
+        String token = authHeader.substring("Bearer ".length());
+
+        Map<String, Object> decode = jwt.decode(token);
 
         if (decode == null) {
           throw new NotAuthorizedException("Bearer token authentication not valid");

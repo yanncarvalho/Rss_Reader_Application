@@ -1,6 +1,6 @@
 package br.dev.yann.rssreader.controller;
 
-import br.dev.yann.rssreader.annotation.Authorization;
+import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.annotation.JWTSerialization;
 import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.model.MessageResponse;
@@ -31,7 +31,7 @@ public class AuthAnyUserController {
   @GET
   @Path("find")
   @Produces(value = MediaType.APPLICATION_JSON)
-  @Authorization
+  @AuthRequired
   public Response find(@HeaderParam("username") String username){
 
 
@@ -75,7 +75,7 @@ public class AuthAnyUserController {
 
   @DELETE
   @Path("delete")
-  @Authorization
+  @AuthRequired
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response delete(@HeaderParam("username") String username){
@@ -85,7 +85,7 @@ public class AuthAnyUserController {
 
   @PUT
   @Path("update")
-  @Authorization
+  @AuthRequired
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response updade(@HeaderParam("username") String username, User user){

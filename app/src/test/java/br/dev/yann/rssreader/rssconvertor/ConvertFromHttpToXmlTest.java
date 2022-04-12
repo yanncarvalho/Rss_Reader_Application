@@ -19,7 +19,6 @@ import br.dev.yann.rssreader.util.RssConvertor;
 
 public class ConvertFromHttpToXmlTest {
 
-
   @Test
   @DisplayName ("itMustConvertMoreThan1kRssLinksAndCheckIfTheMostImportantAtrribuitsInEach One Are Not Null")
   public void itMustConvertMoreThan1kRssLinksAndCheckIfTheMostImportantAtrribuitsInEachOneAreNotNull() {
@@ -85,8 +84,14 @@ public class ConvertFromHttpToXmlTest {
 
   // } catch(XStreamException e){
   // Assertions.fail("Cannot convert "+xml);
-  // }
+  //}
 
   // }
 
 }
+
+
+
+
+
+

@@ -9,7 +9,6 @@ import br.dev.yann.rssreader.auth.PasswordEncryption;
 import br.dev.yann.rssreader.data.AuthAnyUserDao;
 import br.dev.yann.rssreader.entity.User;
 
-
 @Stateful
 @Default
 public class AuthAnyUserService {

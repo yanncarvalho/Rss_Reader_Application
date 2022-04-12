@@ -2,8 +2,8 @@ package br.dev.yann.rssreader.controller;
 
 import java.util.List;
 
-import br.dev.yann.rssreader.annotation.AdminAuthorization;
-import br.dev.yann.rssreader.annotation.Authorization;
+import br.dev.yann.rssreader.annotation.AdminAuthRequired;
+import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.service.AuthAdminService;
 import javax.inject.Inject;
@@ -16,10 +16,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-//TODO ERROR? @onError
 @Path("auth/admin")
-@Authorization
-@AdminAuthorization
+@AuthRequired
+@AdminAuthRequired
 public class AuthAdminController{
 
   @Inject

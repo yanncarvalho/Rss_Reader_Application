@@ -38,7 +38,7 @@ public class RssUrlService {
     dao.deleteRss(user);
   }
 
-  public List<String> hasRss(String username, List<String> rssUrls) {
+  public List<String> getRssList(String username, List<String> rssUrls) {
      User user  = dao.findByUsername(username);
       rssUrls.retainAll(user.getUrlsRss());
     return rssUrls;

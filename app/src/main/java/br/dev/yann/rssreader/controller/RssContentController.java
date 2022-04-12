@@ -2,7 +2,7 @@ package br.dev.yann.rssreader.controller;
 
 import java.util.List;
 
-import br.dev.yann.rssreader.annotation.Authorization;
+import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.service.RssContentService;
 import br.dev.yann.rssreader.util.RssPagination;
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("rss")
-@Authorization
+@AuthRequired
 public class RssContentController {
 
   @Inject

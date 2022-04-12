@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonInclude(Include.NON_NULL)
 public class MessageResponse {
 
-
   @JsonValue
   private Map<String,Object> messageElements = new HashMap<>();
 

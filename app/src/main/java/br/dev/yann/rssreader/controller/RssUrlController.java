@@ -2,7 +2,7 @@ package br.dev.yann.rssreader.controller;
 
 import java.util.List;
 
-import br.dev.yann.rssreader.annotation.Authorization;
+import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.service.RssUrlService;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("rss/url")
-@Authorization
+@AuthRequired
 public class RssUrlController {
 
   @Inject
@@ -58,9 +58,8 @@ public class RssUrlController {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response hasRss(@HeaderParam("username") String username, List<String> rssUrls){
-    //TODO MELHORAR O NOME
-    List<String> rssHad = service.hasRss(username, rssUrls);
-    return Response.ok(rssHad).build();
+    List<String> rssList = service.getRssList(username, rssUrls);
+    return Response.ok(rssList).build();
   }
 
 }
