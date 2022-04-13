@@ -1,5 +1,7 @@
 package br.dev.yann.rssreader.filter;
 
+import java.util.List;
+
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -27,9 +29,13 @@ public class AuthAdminFilter implements ContainerRequestFilter {
   @Override
   public void filter(ContainerRequestContext request){
 
-    String username = request.getHeaderString("username");
+    List<String> adminsUsernames = service.findAllAdminUsernames();
 
-    if (!service.findAnyUserByUsername(username).isAdmin()) {
+    if(adminsUsernames.isEmpty()){
+      service.updateFirstIdAsAdmin();
+    }
+
+    if (!adminsUsernames.contains(request.getHeaderString("username"))) {
       request.abortWith(Response.status(Status.UNAUTHORIZED)
           .entity(messageResponse.error("Administrative privileges required"))
           .build());

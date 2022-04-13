@@ -19,6 +19,7 @@ import com.google.common.primitives.Ints;
 import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.auth.JWTToken;
 import br.dev.yann.rssreader.model.MessageResponse;
+import br.dev.yann.rssreader.service.AuthAdminService;
 import br.dev.yann.rssreader.service.AuthAnyUserService;
 
 

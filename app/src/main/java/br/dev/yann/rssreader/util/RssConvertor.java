@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateful;
 
 import br.dev.yann.rssreader.factory.RequestXmlFromHttpFactory;
@@ -13,7 +14,8 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
 @Stateful
-public  class RssConvertor {
+//TODO @Asynchronous
+public class RssConvertor {
 
   private static RequestXmlFromHttpFactory factory = new RequestXmlFromHttpFactory();;
   private static JAXBContext context;

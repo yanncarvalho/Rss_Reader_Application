@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.data;
+package br.dev.yann.rssreader.dao;
 
 import javax.ejb.Stateless;
 import javax.inject.Named;
@@ -10,6 +10,7 @@ import br.dev.yann.rssreader.entity.User;
 
 @Stateless
 @Named("AuthAnyUser")
+@SuppressWarnings({"unchecked"})
 public class AuthAnyUserDao {
 
   @PersistenceContext(name="rssreader")
@@ -19,13 +20,11 @@ public class AuthAnyUserDao {
      manager.persist(user);
   }
 
-
-  //TODO MELHORAR ESSA QUERY
   public User findByUsername (String username) {
-    Query query = manager.createQuery("SELECT u FROM users u WHERE u.username = :username").setParameter("username", username);
-    if(!query.getResultStream().findAny().isPresent())
-      return null;
-    return (User) query.getSingleResult();
+    Query query = manager.createQuery("SELECT u FROM users u WHERE u.username = :username");
+    query.setParameter("username", username);
+    return (User) query.getResultStream().findFirst().orElse(null);
+
   }
 
   public void delete(User user) {

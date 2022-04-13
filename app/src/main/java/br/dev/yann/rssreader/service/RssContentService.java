@@ -5,7 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.dev.yann.rssreader.data.RssDao;
+import br.dev.yann.rssreader.dao.RssDao;
 import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.util.RssPagination;
 

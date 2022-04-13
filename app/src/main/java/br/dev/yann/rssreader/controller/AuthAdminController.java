@@ -28,7 +28,7 @@ public class AuthAdminController{
   @Path("findAll")
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response findAll(){
-    List<User> users = service.findAll();
+    List<User> users = service.findAllUsers();
     return Response.ok(users).build();
   }
 

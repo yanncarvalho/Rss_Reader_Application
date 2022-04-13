@@ -23,7 +23,7 @@ public class User {
   private String password;
   private String name;
   @Column(name = "is_admin")
-  private boolean admin = false;
+  private boolean isAdmin = false;
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name="rss_urls", joinColumns = @JoinColumn(name="id") )
@@ -65,11 +65,11 @@ public class User {
   }
 
   public boolean isAdmin(){
-    return this.admin;
+    return this.isAdmin;
   }
 
   public void setAdmin(boolean admin){
-    this.admin = admin;
+    this.isAdmin = admin;
   }
 
   public String getPassword() {

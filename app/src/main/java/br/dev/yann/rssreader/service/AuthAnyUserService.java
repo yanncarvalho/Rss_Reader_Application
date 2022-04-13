@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.dev.yann.rssreader.auth.PasswordEncryption;
-import br.dev.yann.rssreader.data.AuthAnyUserDao;
+import br.dev.yann.rssreader.dao.AuthAnyUserDao;
 import br.dev.yann.rssreader.entity.User;
 
 @Stateful

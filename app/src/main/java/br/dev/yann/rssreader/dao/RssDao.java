@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.data;
+package br.dev.yann.rssreader.dao;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
@@ -31,8 +31,7 @@ public class RssDao extends AuthAnyUserDao {
       userTransaction.begin();
         manager.merge(user);
       userTransaction.commit();
-     } catch (NotSupportedException| SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-          | HeuristicRollbackException | SystemException e) {
+     } catch (NotSupportedException| SecurityException | IllegalStateException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SystemException e) {
             //TODO TRATAR
         e.printStackTrace();
       }
@@ -44,8 +43,7 @@ public class RssDao extends AuthAnyUserDao {
       userTransaction.begin();
         manager.merge(user);
       userTransaction.commit();
-     } catch (NotSupportedException| SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-          | HeuristicRollbackException | SystemException e) {
+     } catch (NotSupportedException| SecurityException | IllegalStateException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SystemException e) {
             //TODO TRATAR
         e.printStackTrace();
       }
