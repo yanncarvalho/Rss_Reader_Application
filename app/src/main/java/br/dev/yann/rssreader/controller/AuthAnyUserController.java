@@ -1,10 +1,5 @@
 package br.dev.yann.rssreader.controller;
 
-import br.dev.yann.rssreader.annotation.AuthRequired;
-import br.dev.yann.rssreader.annotation.JWTSerialization;
-import br.dev.yann.rssreader.entity.User;
-import br.dev.yann.rssreader.model.MessageResponse;
-import br.dev.yann.rssreader.service.AuthAnyUserService;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,6 +12,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import br.dev.yann.rssreader.annotation.AuthRequired;
+import br.dev.yann.rssreader.annotation.JWTSerialization;
+import br.dev.yann.rssreader.dto.UserDTO;
+import br.dev.yann.rssreader.entity.User;
+import br.dev.yann.rssreader.model.MessageResponse;
+import br.dev.yann.rssreader.service.AuthAnyUserService;
 
 
 @Path("auth")
@@ -34,10 +36,10 @@ public class AuthAnyUserController {
   @AuthRequired
   public Response find(@HeaderParam("username") String username){
 
-
-    User user = service.find(username);
-    if(user == null)
-        return Response.status(Status.NOT_FOUND).build();
+    User user = service.findByUsername(username);
+    if(user == null){
+      return Response.status(Status.NOT_FOUND).build();
+    }
 
     return Response.status(Status.OK).entity(user).build();
   }
@@ -47,12 +49,11 @@ public class AuthAnyUserController {
   @JWTSerialization
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response login(User user){
-    boolean hasUser = service.isValidUser(user);
-
-   if(hasUser){
+  public Response login(UserDTO.Request.Save  user){
+   User userNew = service.isUserValid(user);
+   if(userNew != null){
       return Response.status(Status.OK)
-                       .entity(user)
+                       .entity(userNew)
                        .build();
     } else {
       return Response.status(Status.NOT_FOUND).build();
@@ -64,7 +65,7 @@ public class AuthAnyUserController {
   @Path("save")
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response save(User user){
+  public Response save(UserDTO.Request.Save user){
     if (service.hasUsername(user.getUsername()))
         return Response.status(Status.CONFLICT)
                        .entity(messageResponse.error("Username already exists"))
@@ -88,7 +89,7 @@ public class AuthAnyUserController {
   @AuthRequired
   @Consumes (value = {MediaType.APPLICATION_JSON})
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response updade(@HeaderParam("username") String username, User user){
+  public Response updade(@HeaderParam("username") String username, UserDTO.Request.Update user){
     User answerUser = service.update(username, user);
 
   return Response.status(Status.OK)

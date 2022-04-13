@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.dev.yann.rssreader.annotation.AdminAuthRequired;
 import br.dev.yann.rssreader.annotation.AuthRequired;
+import br.dev.yann.rssreader.dto.UserDTO;
 import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.service.AuthAdminService;
 import javax.inject.Inject;
@@ -43,7 +44,7 @@ public class AuthAdminController{
   @PUT
   @Path("update/{username}")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response updateAnyUser(@PathParam("username") String username, User user){
+  public Response updateAnyUser(@PathParam("username") String username, UserDTO.Request.Update user){
     service.updateAnyUser(user);
     return Response.ok().build();
   }

@@ -31,8 +31,10 @@ public class AuthAdminFilter implements ContainerRequestFilter {
 
     List<String> adminsUsernames = service.findAllAdminUsernames();
 
+    //If there is no admins, the first user registered will be the admin
     if(adminsUsernames.isEmpty()){
-      service.updateFirstIdAsAdmin();
+      String usernameOfFirstId = service.updateAndGetUsernameByFirstId();
+      adminsUsernames.add(usernameOfFirstId);
     }
 
     if (!adminsUsernames.contains(request.getHeaderString("username"))) {

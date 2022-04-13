@@ -14,12 +14,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
-import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 
 import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.auth.JWTToken;
 import br.dev.yann.rssreader.model.MessageResponse;
-import br.dev.yann.rssreader.service.AuthAdminService;
 import br.dev.yann.rssreader.service.AuthAnyUserService;
 
 
@@ -50,7 +49,7 @@ public class AuthAnyUserFilter implements ContainerRequestFilter {
         }
 
         if(!pattern.matcher(authHeader).find()){
-           throw new NotAuthorizedException("Token authentication not valid");
+           throw new NotAuthorizedException("Authentication token not valid");
         }
 
         String token = authHeader.substring("Bearer ".length());
@@ -58,14 +57,14 @@ public class AuthAnyUserFilter implements ContainerRequestFilter {
         Map<String, Object> decode = jwt.decode(token);
 
         if (decode == null) {
-          throw new NotAuthorizedException("Bearer token authentication not valid");
+          throw new NotAuthorizedException("Authentication bearer token not valid");
        }
 
        String username = Objects.toString(decode.get("usr"),"");
-       Integer hashCode = Ints.tryParse(Objects.toString(decode.get("iss")));
+       Long id = Longs.tryParse(Objects.toString(decode.get("sub")));
 
-       if(username.isBlank() || hashCode == null || !service.hasUser(username, hashCode)){
-         throw new NotAuthorizedException("Bearer token authentication not valid");
+       if(username.isBlank() || id == null || !service.hasUser(username, id)){
+         throw new NotAuthorizedException("Authentication bearer token not valid");
        }
 
        request.getHeaders().add("username", username);

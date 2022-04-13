@@ -5,8 +5,8 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.dev.yann.rssreader.auth.PasswordEncryption;
 import br.dev.yann.rssreader.dao.AuthAnyUserDao;
+import br.dev.yann.rssreader.dto.UserDTO;
 import br.dev.yann.rssreader.entity.User;
 
 @Stateful
@@ -15,52 +15,49 @@ public class AuthAnyUserService {
 
   @Inject
   @Named("AuthAnyUser")
-  private  AuthAnyUserDao dao;
-
-  @Inject
-  private PasswordEncryption crypto;
+  private AuthAnyUserDao dao;
 
   public boolean hasUsername(String username){
     return (dao.findByUsername(username) != null);
   }
 
-  public boolean hasUser(String username, int hashCode){
+  public boolean hasUser(String username, long id){
     User user = dao.findByUsername(username);
-    return (user == null || user.hashCode() == hashCode);
+
+    return (user != null && user.getId() == id);
   }
 
-  public void save (User user){
-    user.setPassword(crypto.hash(user.getPassword()));
-    dao.save(user);
+  public void save (UserDTO.Request.Save user){
+      dao.save(new User(user));
   }
 
-  public boolean isValidUser (User user){
+  public User isUserValid (UserDTO.Request.Save user){
     User userFound = dao.findByUsername(user.getUsername());
-    //TODO CLASSE SEPRADA PARA VALIDAÇÃO?
-    if (userFound != null && userFound.equals(user) && crypto.authenticate(user.getPassword(), userFound.getPassword()))
-      return true;
-   return false;
+
+    if(userFound != null && userFound.authenticate(user.getPassword())){
+      return userFound;
+    }
+    return null;
   }
 
-  public User find (String username){
-
+  public User findByUsername (String username){
     return dao.findByUsername(username);
   }
-
 
   public void delete (String username){
     User findById = dao.findByUsername(username);
     dao.delete(findById);
   }
+
   //FIXME TEM QUE ATUALIZAR OS VALORES NA MAO
-  public User update(String username, User user) {
+  public User update(String username, UserDTO.Request.Update user) {
 
     User findByUsername = dao.findByUsername(username);
     if (!findByUsername.getUsername().equals(user.getUsername()) && hasUsername(user.getUsername()))
           return  null;
-    user.setId(findByUsername.getId());
-    user.setPassword(crypto.hash(user.getPassword()));
-    dao.update(user);
-    return user;
+          findByUsername.setId(findByUsername.getId());
+          findByUsername.setPassword(user.getPassword());
+    dao.update(findByUsername);
+    return findByUsername;
   }
 }

@@ -24,7 +24,6 @@ public class AuthAnyUserDao {
     Query query = manager.createQuery("SELECT u FROM users u WHERE u.username = :username");
     query.setParameter("username", username);
     return (User) query.getResultStream().findFirst().orElse(null);
-
   }
 
   public void delete(User user) {

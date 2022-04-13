@@ -32,10 +32,11 @@ public class JWTToken {
       long tenDaysFromNow = new Date().getTime() + TimeUnit.DAYS.toMillis(10);
 
       var header = new JWSHeader.Builder(JWSAlgorithm.HS256).build();
+      String username = user.getUsername();
       var claims = new JWTClaimsSet.Builder()
                                     .issuer(ISSUER)
-                                    .subject(Integer.toString(user.hashCode()))
-                                    .claim("usr", user.getUsername())
+                                    .subject(Long.toString(user.getId()))
+                                    .claim("usr", username)
                                     .expirationTime(new Date(tenDaysFromNow))
                                     .build();
 

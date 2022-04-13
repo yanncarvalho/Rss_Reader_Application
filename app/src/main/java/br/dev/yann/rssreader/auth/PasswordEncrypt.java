@@ -12,27 +12,15 @@ import java.util.regex.Pattern;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public class PasswordEncryption {
+public class PasswordEncrypt {
 
   public static final String ID = "$31$";
   public static final int DEFAULT_COST = 16;
   private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
   private static final int SIZE = 128;
   private static final Pattern layout = Pattern.compile("\\$31\\$(\\d\\d?)\\$(.{43})");
-  private final SecureRandom random;
-  private final int cost;
+  private final static SecureRandom random = new SecureRandom();
 
-  public PasswordEncryption()
-  {
-    this(DEFAULT_COST);
-  }
-
-  public PasswordEncryption(int cost)
-  {
-    iterations(cost);
-    this.cost = cost;
-    this.random = new SecureRandom();
-  }
 
   private static int iterations(int cost)
   {
@@ -42,19 +30,19 @@ public class PasswordEncryption {
   }
 
 
-  public String hash(String password)
+  public static String hash(String password)
   {
     byte[] salt = new byte[SIZE / 8];
     random.nextBytes(salt);
-    byte[] dk = pbkdf2(password.toCharArray(), salt, 1 << cost);
+    byte[] dk = pbkdf2(password.toCharArray(), salt, 1 << DEFAULT_COST );
     byte[] hash = new byte[salt.length + dk.length];
     System.arraycopy(salt, 0, hash, 0, salt.length);
     System.arraycopy(dk, 0, hash, salt.length, dk.length);
     Base64.Encoder enc = Base64.getUrlEncoder().withoutPadding();
-    return ID + cost + '$' + enc.encodeToString(hash);
+    return ID + DEFAULT_COST  + '$' + enc.encodeToString(hash);
   }
 
-  public boolean authenticate(String password, String token)
+  public static boolean authenticate(String password, String token)
   {
     Matcher m = layout.matcher(token);
     if (!m.matches())

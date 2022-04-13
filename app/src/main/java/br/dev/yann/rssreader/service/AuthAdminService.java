@@ -6,8 +6,8 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.dev.yann.rssreader.auth.PasswordEncryption;
 import br.dev.yann.rssreader.dao.AuthAdminDao;
+import br.dev.yann.rssreader.dto.UserDTO;
 import br.dev.yann.rssreader.entity.User;
 
 @Stateful
@@ -17,17 +17,14 @@ public class AuthAdminService {
   @Named("AuthAdmin")
   private AuthAdminDao dao;
 
-  @Inject
-  private PasswordEncryption crypto;
-
   public List<User> findAllUsers() {
     return dao.findAllUsers();
   }
 
   //TODO ajeitar O ATUALIZAR TEM QUE TER OS VALORES DO USUARIO SETADOS
-  public void updateAnyUser (User user){
-    user.setPassword(crypto.hash(user.getPassword()));
-    dao.update(user);
+  public void updateAnyUser (UserDTO.Request.Update user){
+    User userFound = dao.findByUsername(user.getUsername());
+    dao.update(userFound);
   }
 
   public User findAnyUserByUsername(String username) {
@@ -39,12 +36,12 @@ public class AuthAdminService {
   }
   public List<String> findAllAdminUsernames() {
     List<String> adminsUsernames = dao.findAllAdminUsernames();
-
     return adminsUsernames;
   }
 
-  public String updateFirstIdAsAdmin() {
-     return dao.updateFirstIdAsAdmin();
+  public String updateAndGetUsernameByFirstId() {
+     dao.updateFirstIdAsAdmin();
+     return dao.findUsernameByFirstId();
   }
 
 }

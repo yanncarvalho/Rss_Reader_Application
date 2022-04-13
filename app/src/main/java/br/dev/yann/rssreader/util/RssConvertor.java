@@ -5,7 +5,6 @@ import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import javax.ejb.Asynchronous;
 import javax.ejb.Stateful;
 
 import br.dev.yann.rssreader.factory.RequestXmlFromHttpFactory;
