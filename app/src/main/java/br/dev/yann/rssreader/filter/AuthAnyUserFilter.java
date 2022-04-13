@@ -1,6 +1,7 @@
 package br.dev.yann.rssreader.filter;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import javax.annotation.Priority;
@@ -12,6 +13,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+
+import com.google.common.primitives.Ints;
 
 import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.auth.JWTToken;
@@ -57,9 +60,10 @@ public class AuthAnyUserFilter implements ContainerRequestFilter {
           throw new NotAuthorizedException("Bearer token authentication not valid");
        }
 
-       String username = decode.get("username").toString();
+       String username = Objects.toString(decode.get("usr"),"");
+       Integer hashCode = Ints.tryParse(Objects.toString(decode.get("iss")));
 
-       if(username == null || !service.hasUsername(username)){
+       if(username.isBlank() || hashCode == null || !service.hasUser(username, hashCode)){
          throw new NotAuthorizedException("Bearer token authentication not valid");
        }
 

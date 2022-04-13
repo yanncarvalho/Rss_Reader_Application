@@ -24,6 +24,10 @@ public class AuthAnyUserService {
     return (dao.findByUsername(username) != null);
   }
 
+  public boolean hasUser(String username, int hashCode){
+    User user = dao.findByUsername(username);
+    return (user == null || user.hashCode() == hashCode);
+  }
 
   public void save (User user){
     user.setPassword(crypto.hash(user.getPassword()));
