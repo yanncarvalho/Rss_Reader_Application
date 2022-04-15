@@ -10,7 +10,7 @@ public class SetOfRssLinks {
   final private String file;
 
   public SetOfRssLinks() {
-    this.file = "./src/test/java/br/com/yann/servlet/rssreader/RssConvertor/service/resources/RssLinks";
+    this.file = "./src/test/java/br/dev/yann/rssreader/rssconvertor/service/resources/RssLinks";
   }
 
   public Set<String> getSet() {

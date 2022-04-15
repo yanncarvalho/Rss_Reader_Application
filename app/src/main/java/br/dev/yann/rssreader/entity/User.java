@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -12,12 +11,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.dev.yann.rssreader.auth.PasswordEncrypt;
-
+import lombok.ToString;
+@ToString
 @Entity(name = "users")
 public class User {
 
@@ -33,11 +32,11 @@ public class User {
   private String name;
 
   @Column(name = "is_admin")
+
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
    private boolean admin = false;
 
-  @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name="rss_urls", joinColumns = @JoinColumn(name="id") )
+  @ElementCollection(fetch = FetchType.EAGER)
   private List<String> urls = new ArrayList<>();
 
   public User() {

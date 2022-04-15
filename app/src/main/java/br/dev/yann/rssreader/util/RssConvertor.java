@@ -41,15 +41,13 @@ public class RssConvertor {
         String treatable = prepareURI(url);
         String treated = treatXml(factory.getXml(treatable));
         Rss rss  = (Rss) context.createUnmarshaller().unmarshal(new StringReader(treated));
-      return rss;
-      } catch (JAXBException e) {
-        // TODO Auto-generated catch block
+        rss.setOriginalLink(url);
+       return rss;
+      } catch (JAXBException | IOException e) {
         e.printStackTrace();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        return null;
       }
-     return null;
+
   }
 }
 

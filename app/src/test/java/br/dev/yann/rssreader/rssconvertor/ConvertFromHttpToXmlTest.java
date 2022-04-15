@@ -39,7 +39,8 @@ public class ConvertFromHttpToXmlTest {
             try {
 
               Rss rss = RssConvertor.get(url);
-              assertNotNull(rss.getTitle());
+
+              assertNotNull( rss.getChannel().getTitle());
 
             } catch (Exception e) {
 

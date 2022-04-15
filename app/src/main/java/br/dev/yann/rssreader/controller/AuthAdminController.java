@@ -41,18 +41,6 @@ public class AuthAdminController{
   }
 
   @GET
-  @Path("findByUsername")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response findUserByUsernameAsAdmin(@QueryParam("username") String username){
-    User user = service.findUserByUsernameAsAdmin(username);
-    if(user == null){
-      return Response.status(Status.NOT_FOUND).build();
-    } else{
-      return Response.ok(user).build();
-    }
-  }
-
-  @GET
   @Path("findById")
   @Produces(MediaType.APPLICATION_JSON)
   public Response findUserByIdAsAdmin(@QueryParam("id") Long id){
@@ -70,7 +58,7 @@ public class AuthAdminController{
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response updateUserAsAdmin(@QueryParam("id") Long id, UserDTO.Request.Update user){
 
-     if(user.getUsername() != null && service.hasUsername(user.getUsername(), id)) {
+     if(user.getUsername() != null && service.hasUsernameWithOriginalId(user.getUsername(), id)) {
       return Response.status(Status.CONFLICT)
                       .entity(messageResponse.error("Username already exists"))
                       .build();

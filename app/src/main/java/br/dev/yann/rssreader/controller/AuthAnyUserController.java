@@ -95,7 +95,7 @@ public class AuthAnyUserController {
   @Consumes(value = { MediaType.APPLICATION_JSON })
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response updade(@HeaderParam("idToken") Long id, UserDTO.Request.Update user) {
-    if(user.getUsername() != null && service.hasUsername(user.getUsername(), id)) {
+    if(user.getUsername() != null && service.hasUsernameWithOriginalId(user.getUsername(), id)) {
       return Response.status(Status.CONFLICT)
           .entity(messageResponse.error("Username already exists"))
           .build();
@@ -107,7 +107,5 @@ public class AuthAnyUserController {
           .entity(answerUser)
           .build();
     }
-
   }
-
 }

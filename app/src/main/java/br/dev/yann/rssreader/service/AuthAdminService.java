@@ -45,14 +45,8 @@ public class AuthAdminService {
     return dao.findById(id);
   }
 
-  public User findUserByUsernameAsAdmin(String username) {
-    return dao.findByUsername(username);
-  }
-
-  public boolean hasUsername(String username, Long id) {
+  public boolean hasUsernameWithOriginalId(String username, Long id) {
     User findByUsername = dao.findByUsername(username);
     return (findByUsername != null && findByUsername.getId() != id);
   }
-
-
 }

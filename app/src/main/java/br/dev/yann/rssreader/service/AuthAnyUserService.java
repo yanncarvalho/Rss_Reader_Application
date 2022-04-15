@@ -44,14 +44,14 @@ public class AuthAnyUserService {
   }
 
   public UserDTO.Response.Find findById(Long id) {
-    return new UserDTO.Response.Find(dao.findById(id));
+      return new UserDTO.Response.Find(dao.findById(id));
   }
 
   public User update(UserDTO.Request.Update user) {
     return dao.update(user);
   }
-  
-  public boolean hasUsername(String username, Long id) {
+
+  public boolean hasUsernameWithOriginalId(String username, Long id) {
     User findByUsername = dao.findByUsername(username);
     return (findByUsername != null && findByUsername.getId() != id);
   }

@@ -67,7 +67,7 @@ public enum UserDTO {
       private String name;
       private List<String> urls;
 
-     public Find(br.dev.yann.rssreader.entity.User user){
+     public Find(User user){
         this.username = user.getUsername();
         this.name = user.getName();
         this.urls = user.getUrlsRss();
