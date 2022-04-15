@@ -21,27 +21,38 @@ public class AuthAdminService {
     return dao.findAllUsers();
   }
 
-  //TODO ajeitar O ATUALIZAR TEM QUE TER OS VALORES DO USUARIO SETADOS
-  public void updateAnyUser (UserDTO.Request.Update user){
-    User userFound = dao.findByUsername(user.getUsername());
-    dao.update(userFound);
+  public void updateUserAsAdmin (UserDTO.Request.Update user){
+    dao.update(user);
   }
 
-  public User findAnyUserByUsername(String username) {
+  public void deleteUserAsAdmin(Long id) {
+    dao.delete(id);
+  }
+  public List<Long> findAllAdminsIds() {
+    return dao.findAllAdminsIds();
+  }
+
+  public Long updateAndGetFirstId() {
+     dao.updateFirstIdAsAdmin();
+     return dao.findFirstId();
+  }
+
+  public boolean hasUsername(String username){
+    return (dao.findByUsername(username) != null);
+  }
+
+  public User findUserByIdAsAdmin(Long id) {
+    return dao.findById(id);
+  }
+
+  public User findUserByUsernameAsAdmin(String username) {
     return dao.findByUsername(username);
   }
 
-  public void deleteAnyUser(String username) {
-    dao.delete(dao.findByUsername(username));
-  }
-  public List<String> findAllAdminUsernames() {
-    List<String> adminsUsernames = dao.findAllAdminUsernames();
-    return adminsUsernames;
+  public boolean hasUsername(String username, Long id) {
+    User findByUsername = dao.findByUsername(username);
+    return (findByUsername != null && findByUsername.getId() != id);
   }
 
-  public String updateAndGetUsernameByFirstId() {
-     dao.updateFirstIdAsAdmin();
-     return dao.findUsernameByFirstId();
-  }
 
 }

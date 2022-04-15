@@ -10,6 +10,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
+import com.google.common.primitives.Longs;
+
 import br.dev.yann.rssreader.annotation.AdminAuthRequired;
 import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAdminService;
@@ -29,15 +31,15 @@ public class AuthAdminFilter implements ContainerRequestFilter {
   @Override
   public void filter(ContainerRequestContext request){
 
-    List<String> adminsUsernames = service.findAllAdminUsernames();
+    List<Long> adminsIds = service.findAllAdminsIds();
 
     //If there is no admins, the first user registered will be the admin
-    if(adminsUsernames.isEmpty()){
-      String usernameOfFirstId = service.updateAndGetUsernameByFirstId();
-      adminsUsernames.add(usernameOfFirstId);
+    if(adminsIds.isEmpty()){
+      Long firstId = service.updateAndGetFirstId();
+      adminsIds.add(firstId);
     }
 
-    if (!adminsUsernames.contains(request.getHeaderString("username"))) {
+    if (!adminsIds.contains(Longs.tryParse(request.getHeaderString("idToken")))) {
       request.abortWith(Response.status(Status.UNAUTHORIZED)
           .entity(messageResponse.error("Administrative privileges required"))
           .build());

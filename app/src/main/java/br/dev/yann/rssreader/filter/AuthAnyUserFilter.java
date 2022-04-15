@@ -21,7 +21,6 @@ import br.dev.yann.rssreader.auth.JWTToken;
 import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAnyUserService;
 
-
 @Provider
 @Priority(100)
 @AuthRequired
@@ -40,39 +39,39 @@ public class AuthAnyUserFilter implements ContainerRequestFilter {
   @Override
   public void filter(ContainerRequestContext request) {
 
-    try{
+    try {
 
       String authHeader = request.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-      if (authHeader == null){
-          throw new NotAuthorizedException("Token required");
-        }
+      if (authHeader == null) {
+        throw new NotAuthorizedException("Token required");
+      }
 
-        if(!pattern.matcher(authHeader).find()){
-           throw new NotAuthorizedException("Authentication token not valid");
-        }
+      if (!pattern.matcher(authHeader).find()) {
+        throw new NotAuthorizedException("Authentication token not valid");
+      }
 
-        String token = authHeader.substring("Bearer ".length());
+      String token = authHeader.substring("Bearer ".length());
 
-        Map<String, Object> decode = jwt.decode(token);
+      Map<String, Object> decode = jwt.decode(token);
 
-        if (decode == null) {
-          throw new NotAuthorizedException("Authentication bearer token not valid");
-       }
+      if (decode == null) {
+        throw new NotAuthorizedException("Authentication bearer token not valid");
+      }
 
-       String username = Objects.toString(decode.get("usr"),"");
-       Long id = Longs.tryParse(Objects.toString(decode.get("sub")));
+      String idString = Objects.toString(decode.get("sub"));
+      Long id = Longs.tryParse(idString);
 
-       if(username.isBlank() || id == null || !service.hasUser(username, id)){
-         throw new NotAuthorizedException("Authentication bearer token not valid");
-       }
+      if (id == null || !service.hasUserById(id)) {
+        throw new NotAuthorizedException("Authentication bearer token not valid");
+      }
 
-       request.getHeaders().add("username", username);
+      request.getHeaders().putSingle("idToken", idString);
 
-    } catch (NotAuthorizedException e){
+    } catch (NotAuthorizedException e) {
       request.abortWith(Response.status(Status.UNAUTHORIZED)
-      .entity(messageResponse.error(e.getChallenges().get(0).toString()))
-      .build());
+          .entity(messageResponse.error(e.getChallenges().get(0).toString()))
+          .build());
     }
   }
 

@@ -27,8 +27,8 @@ public class RssContentController {
   @GET
   @Path("getUserContents")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response getContents(@HeaderParam("username") String username, @QueryParam("page")  int page, @QueryParam("size") @DefaultValue("10") int size, @QueryParam ("offset") int offset){
-    RssPagination rssPage = service.getUserRssContents(username, page, size, offset);
+  public Response getContents(@HeaderParam("idToken") Long id, @QueryParam("page")  int page, @QueryParam("size") @DefaultValue("10") int size, @QueryParam ("offset") int offset){
+    RssPagination rssPage = service.getUserRssContents(id, page, size, offset);
 
     return Response.ok(rssPage).build();
   }
@@ -38,6 +38,7 @@ public class RssContentController {
   @Produces(value = MediaType.APPLICATION_JSON)
   @Consumes(value = MediaType.APPLICATION_JSON)
   public Response convertRssUrls(List<String> urls, @QueryParam("page") int page, @QueryParam("size") @DefaultValue("10") int size, @QueryParam ("offset") int offset){
+
     RssPagination rssPage = service.convertRssUrls(urls, page, size, offset);
 
     return Response.ok(rssPage).build();

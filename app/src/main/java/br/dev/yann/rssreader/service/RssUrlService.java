@@ -15,32 +15,32 @@ public class RssUrlService {
   private RssDao dao;
 
 
-  public List<String> findAll(String username) {
-    User user  = dao.findByUsername(username);
+  public List<String> findAll(Long id) {
+    User user  = dao.findById(id);
     return user.getUrlsRss();
   }
 
-  public void deleteRss(String username, List<String> rssUrls) {
-    User user  = dao.findByUsername(username);
+  public void deleteRss(Long id, List<String> rssUrls) {
+    User user  = dao.findById(id);
     user.removeAllUrlsRss(rssUrls);
     dao.deleteRss(user);
   }
 
-  public void addRss(String username, List<String> rssUrls) {
-    User user  = dao.findByUsername(username);
+  public void addRss(Long id, List<String> rssUrls) {
+    User user  = dao.findById(id);
     user.addAllUrlRss(rssUrls);
     dao.addRss(user);
   }
 
-  public void deleteAllRss(String username) {
-    User user  = dao.findByUsername(username);
+  public void deleteAllRss(Long id) {
+    User user  = dao.findById(id);
     user.cleanUrlsRss();
     dao.deleteRss(user);
   }
 
-  public List<String> getRssList(String username, List<String> rssUrls) {
-     User user  = dao.findByUsername(username);
-      rssUrls.retainAll(user.getUrlsRss());
+  public List<String> getRssList(Long id, List<String> rssUrls) {
+     User user  = dao.findById(id);
+     rssUrls.retainAll(user.getUrlsRss());
     return rssUrls;
   }
 

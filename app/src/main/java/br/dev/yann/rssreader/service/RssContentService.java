@@ -15,8 +15,8 @@ public class RssContentService {
   @Named("Rss")
   private RssDao dao;
 
-  public RssPagination getUserRssContents(String username, int page, int size, int offset) {
-    User user  = dao.findByUsername(username);
+  public RssPagination getUserRssContents(Long id, int page, int size, int offset) {
+    User user  = dao.findById(id);
     return new RssPagination (user.getUrlsRss(), page, size, offset);
   }
 

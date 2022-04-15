@@ -1,6 +1,8 @@
 package br.dev.yann.rssreader.dto;
 
 import java.util.List;
+import br.dev.yann.rssreader.entity.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,16 +18,17 @@ public enum UserDTO {
     public String getUsername();
   }
 
-  private interface Id {
-    public Long getId();
-  }
-
   private interface Password {
     public String getPassword();
   }
 
-  private interface AdminRole {
-    public Boolean isAdmin();
+  private interface Id {
+    public Long getId();
+  }
+
+
+  private interface Urls{
+    public List<String> getUrls();
   }
 
   public enum Request {;
@@ -34,28 +37,44 @@ public enum UserDTO {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    public static class Save extends Base implements Password, Username, Name {
+    public static class Login extends Base implements Password, Username {
       private String password;
       private String username;
-      private String name;
     };
 
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    public static class Update extends Base implements Password, Username, Name, Id, AdminRole {
+    public static class Update extends Base implements Password, Username, Name, Id{
       private String password;
       private String username;
       private String name;
+      @JsonProperty(access = JsonProperty.Access.READ_ONLY)
       private Long id;
-      private Boolean isAdmin;
+    };
 
-      @Override
-      public Boolean isAdmin() {
-         return isAdmin;
+   };
+
+   public enum Response {;
+
+    @Data
+    private static class Base {};
+
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    public static class Find extends Base implements Username, Name, Urls{
+      private String username;
+      private String name;
+      private List<String> urls;
+
+     public Find(br.dev.yann.rssreader.entity.User user){
+        this.username = user.getUsername();
+        this.name = user.getName();
+        this.urls = user.getUrlsRss();
       }
+
     }
 
-  };
+  }
 
 }

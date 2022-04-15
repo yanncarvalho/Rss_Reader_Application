@@ -17,46 +17,30 @@ import javax.persistence.JoinColumn;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.dev.yann.rssreader.auth.PasswordEncrypt;
-import br.dev.yann.rssreader.dto.UserDTO;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Setter
-@ToString
 @Entity(name = "users")
 public class User {
 
   @Id
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Getter
   private Long id;
 
-  @Getter
   private String username;
 
   private String password;
 
-  @Getter
   private String name;
 
   @Column(name = "is_admin")
-  @JsonProperty
-  @Getter
-  private boolean isAdmin = false;
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+   private boolean admin = false;
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name="rss_urls", joinColumns = @JoinColumn(name="id") )
   private List<String> urls = new ArrayList<>();
 
   public User() {
-  }
-
-  //TODO tirar isso
-  public User(UserDTO.Request.Save save) {
-    name = save.getName();
-    username = save.getUsername();
-    this.setPassword(save.getPassword());
   }
 
   public List<String> getUrlsRss() {
@@ -91,8 +75,44 @@ public class User {
      this.urls.clear();
   }
 
-   public boolean authenticate(String password) {
-    return PasswordEncrypt.authenticate(this.password, password);
+  public boolean isAdmin(){
+    return this.admin;
   }
+
+  public void setAdmin(boolean admin){
+    this.admin = admin;
+  }
+
+
+  public void setPassword(String password) {
+    this.password = PasswordEncrypt.hash(password);
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+
+   public boolean authenticate(String password) {
+    return PasswordEncrypt.authenticate(password, this.password);
+   }
 
 }

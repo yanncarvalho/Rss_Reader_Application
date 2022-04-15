@@ -25,31 +25,31 @@ public class RssUrlController {
   @GET
   @Path("findAll")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response findAllRssByUser(@HeaderParam("username") String username){
-    List<String> rss = service.findAll(username);
+  public Response findAllRssByUser(@HeaderParam("idToken") Long id){
+    List<String> rss = service.findAll(id);
     return Response.ok(rss).build();
   }
 
   @DELETE
   @Path("delete")
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response deleteRss(@HeaderParam("username") String username, List<String> rssUrls){
-     service.deleteRss(username, rssUrls);
+  public Response deleteRss(@HeaderParam("idToken") Long id, List<String> rssUrls){
+     service.deleteRss(id, rssUrls);
     return Response.ok().build();
   }
 
   @DELETE
   @Path("deleteAll")
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response deleteAllRss(@HeaderParam("username") String username, List<String> rssUrls){
-     service.deleteAllRss(username);
+  public Response deleteAllRss(@HeaderParam("idToken") Long id, List<String> rssUrls){
+     service.deleteAllRss(id);
     return Response.ok().build();
   }
   @POST
   @Path("add")
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response addRss(@HeaderParam("username") String username, List<String> rssUrls){
-     service.addRss(username, rssUrls);
+  public Response addRss(@HeaderParam("idToken") Long id, List<String> rssUrls){
+     service.addRss(id, rssUrls);
     return Response.ok().build();
   }
 
@@ -57,8 +57,8 @@ public class RssUrlController {
   @Path("hasUrl")
   @Consumes(value = MediaType.APPLICATION_JSON)
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response hasRss(@HeaderParam("username") String username, List<String> rssUrls){
-    List<String> rssList = service.getRssList(username, rssUrls);
+  public Response hasUrl(@HeaderParam("idToken") Long id, List<String> rssUrls){
+    List<String> rssList = service.getRssList(id, rssUrls);
     return Response.ok(rssList).build();
   }
 
