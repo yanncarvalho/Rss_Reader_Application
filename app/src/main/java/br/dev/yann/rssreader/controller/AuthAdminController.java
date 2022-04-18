@@ -3,10 +3,13 @@ package br.dev.yann.rssreader.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -33,7 +36,7 @@ public class AuthAdminController{
   private AuthAdminService service;
 
   @GET
-  @Path("findAll")
+  @Path("findUsers")
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response findAll(){
     List<User> users = service.findAllUsers();
@@ -41,10 +44,10 @@ public class AuthAdminController{
   }
 
   @GET
-  @Path("findById")
+  @Path("findUsers/{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response findUserByIdAsAdmin(@QueryParam("id") Long id){
-    User user = service.findUserByIdAsAdmin(id);
+  public Response findUserByIdAsAdmin(@PathParam("id") @Valid @Positive long id){
+    var  user = service.findUserByIdAsAdmin(id);
     if(user == null){
       return Response.status(Status.NOT_FOUND).build();
     } else{
@@ -56,24 +59,36 @@ public class AuthAdminController{
   @PUT
   @Path("update")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response updateUserAsAdmin(@QueryParam("id") Long id, UserDTO.Request.Update user){
+  public Response updateUserAsAdmin(@QueryParam("id") @Valid  @Positive long id, UserDTO.Request.Update user){
 
      if(user.getUsername() != null && service.hasUsernameWithOriginalId(user.getUsername(), id)) {
-      return Response.status(Status.CONFLICT)
+         return Response.status(Status.CONFLICT)
                       .entity(messageResponse.error("Username already exists"))
                       .build();
     }
     user.setId(id);
-    service.updateUserAsAdmin(user);
-    return Response.ok().build();
+
+    if(service.updateUserAsAdmin(user)){
+        return Response.ok().build();
+    } else {
+      return Response.status(Status.NOT_FOUND)
+                      .entity(messageResponse.error("The id informed was not found"))
+                      .build();
+    }
   }
 
   @DELETE
   @Path("delete")
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response deleteUserAsAdmin(@QueryParam("id") Long id){
-    service.deleteUserAsAdmin(id);
-    return Response.ok().build();
+  public Response deleteUserAsAdmin(@QueryParam("id") @Valid  @Positive long id){
+    if(service.deleteUserAsAdmin(id)){
+      return Response.ok().build();
+    } else {
+      return Response.status(Status.NOT_FOUND)
+      .entity(messageResponse.error("The id informed was not found"))
+      .build();
+    }
+
   }
 
 }

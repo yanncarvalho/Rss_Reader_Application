@@ -21,12 +21,12 @@ public class AuthAdminService {
     return dao.findAllUsers();
   }
 
-  public void updateUserAsAdmin (UserDTO.Request.Update user){
-    dao.update(user);
+  public boolean updateUserAsAdmin (UserDTO.Request.Update user){
+    return (dao.update(user) != null);
   }
 
-  public void deleteUserAsAdmin(Long id) {
-    dao.delete(id);
+  public boolean deleteUserAsAdmin(Long id) {
+    return dao.delete(id);
   }
   public List<Long> findAllAdminsIds() {
     return dao.findAllAdminsIds();

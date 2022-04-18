@@ -29,7 +29,9 @@ dependencies {
     implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
     implementation 'com.nimbusds:nimbus-jose-jwt:9.19'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Alpha3'
+    implementation 'org.hibernate:hibernate-validator-annotation-processor:8.0.0.Alpha3'
+
 
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:8.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.22'

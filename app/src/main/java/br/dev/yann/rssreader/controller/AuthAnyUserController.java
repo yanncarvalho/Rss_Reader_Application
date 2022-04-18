@@ -1,6 +1,7 @@
 package br.dev.yann.rssreader.controller;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,9 +34,9 @@ public class AuthAnyUserController {
   @Path("find")
   @Produces(value = MediaType.APPLICATION_JSON)
   @AuthRequired
-  public Response find(@HeaderParam("idToken") Long id) {
+  public Response find(@HeaderParam("idToken") long id) {
 
-    UserDTO.Response.Find user = service.findById(id);
+    UserDTO.Response.FindAnyUser user = service.findByIdResponse(id);
     if (user == null) {
       return Response.status(Status.NOT_FOUND).build();
     }
@@ -48,7 +49,7 @@ public class AuthAnyUserController {
   @JWTSerialization
   @Consumes(value = { MediaType.APPLICATION_JSON })
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response login(UserDTO.Request.Login user) {
+  public Response login(@Valid UserDTO.Request.Login user) {
     User userNew = service.login(user);
     if (userNew != null) {
       return Response.status(Status.OK)
@@ -66,14 +67,15 @@ public class AuthAnyUserController {
   @Path("save")
   @Consumes(value = { MediaType.APPLICATION_JSON })
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response save(User user) {
+  public Response save( @Valid  UserDTO.Request.Save user) {
 
     if (service.hasUsername(user.getUsername())) {
       return Response.status(Status.CONFLICT)
           .entity(messageResponse.error("Username already exists"))
           .build();
     } else {
-      service.save(user);
+      User newUser = new User(user.getName(), user.getPassword(), user.getUsername());
+      service.save(newUser);
       return Response.status(Status.CREATED).build();
     }
   }
@@ -83,7 +85,7 @@ public class AuthAnyUserController {
   @AuthRequired
   @Consumes(value = { MediaType.APPLICATION_JSON })
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response delete(@HeaderParam("idToken") Long id) {
+  public Response delete(@HeaderParam("idToken") long id) {
     service.delete(id);
     return Response.status(Status.OK).build();
   }
@@ -94,7 +96,7 @@ public class AuthAnyUserController {
   @JWTSerialization
   @Consumes(value = { MediaType.APPLICATION_JSON })
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response updade(@HeaderParam("idToken") Long id, UserDTO.Request.Update user) {
+  public Response updade(@HeaderParam("idToken") long id, UserDTO.Request.Update user) {
     if(user.getUsername() != null && service.hasUsernameWithOriginalId(user.getUsername(), id)) {
       return Response.status(Status.CONFLICT)
           .entity(messageResponse.error("Username already exists"))
@@ -102,10 +104,10 @@ public class AuthAnyUserController {
     } else {
       user.setId(id);
       User answerUser = service.update(user);
-
       return Response.status(Status.OK)
           .entity(answerUser)
           .build();
     }
   }
+
 }

@@ -56,39 +56,6 @@ public class ConvertFromHttpToXmlTest {
     System.out.println("Execution time in minutes: " + timeElapsed);
   }
 
-  // @Test
-  // public void itMustFailTryingToConvert() {
-  //   String xml = "https://www.w3schools.com/xml/note.xml";
-  //   Assertions.assertThrows(UnmarshalException.class, () -> convertor.getRss(xml));
-
-  // }
-
-
-
-
-  // @Test //TODO IMPLEMENT AN EMPTY TEST
-  // public void TheRssElementsMustBeNull() {
-  // String xml = "<rss version=\"2.0\">"+
-  // "<channel>"+
-  // "<title></title>"+
-  // "<description></description>"+
-  // "<link></link>"+
-  // "</channel>"+
-  // "</rss>";
-
-  // try{
-
-  // convertor.getRssString(xml);
-  // Assertions.assertNull(rss.getTitle());
-  // Assertions.assertNull(rss.getDescription());
-  // Assertions.assertNull(rss.getLink());
-
-  // } catch(XStreamException e){
-  // Assertions.fail("Cannot convert "+xml);
-  //}
-
-  // }
-
 }
 
 

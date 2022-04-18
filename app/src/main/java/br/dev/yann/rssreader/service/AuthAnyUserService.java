@@ -26,7 +26,7 @@ public class AuthAnyUserService {
   }
 
   public void save(User user) {
-    dao.save(user);
+      dao.save(user);
   }
 
   public User login(UserDTO.Request.Login user) {
@@ -43,8 +43,12 @@ public class AuthAnyUserService {
     dao.delete(id);
   }
 
-  public UserDTO.Response.Find findById(Long id) {
-      return new UserDTO.Response.Find(dao.findById(id));
+  public UserDTO.Response.FindAnyUser findByIdResponse(Long id) {
+      return dao.findByIdReponseAnyUser(id);
+  }
+
+  public User findById(Long id) {
+    return dao.findById(id);
   }
 
   public User update(UserDTO.Request.Update user) {
