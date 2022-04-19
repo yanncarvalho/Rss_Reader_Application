@@ -14,6 +14,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
+import org.jboss.logging.Logger;
+
 import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.auth.JWTToken;
 import br.dev.yann.rssreader.model.BucketToken;
@@ -26,6 +28,8 @@ import br.dev.yann.rssreader.util.BucketTokenManage;
 @AuthRequired
 public class AuthAnyUserFilter implements ContainerRequestFilter {
 
+  private static Logger LOGGER = Logger.getLogger(AuthAnyUserFilter.class);
+
   @Inject
   private MessageResponse messageResponse;
 
@@ -34,6 +38,7 @@ public class AuthAnyUserFilter implements ContainerRequestFilter {
 
   @Inject
   private JWTToken jwt;
+
   private final Pattern pattern = Pattern.compile("Bearer\\s\\w*.\\w*.\\w*");
 
   private static Map<Long,BucketToken> bucket = new HashMap<>();
@@ -69,16 +74,19 @@ public class AuthAnyUserFilter implements ContainerRequestFilter {
       }
 
       if(!bucket.containsKey(id)){
-        bucket.put(id, new BucketToken());
+        bucket.put(id, new BucketToken(id));
       } else {
         bucket.get(id).refleshRequestTime();
       }
 
       new BucketTokenManage(bucket).start();
 
+      LOGGER.info("Authorized token: "+token+" from user with id: "+id+ " and request:"+request.getRequest() );
+
       request.getHeaders().putSingle("idToken", id.toString());
 
     } catch (NotAuthorizedException e) {
+      LOGGER.info("Unauthorized request: "+request.getHeaders());
       request.abortWith(Response.status(Status.UNAUTHORIZED)
           .entity(messageResponse.error(e.getChallenges().get(0).toString()))
           .build());

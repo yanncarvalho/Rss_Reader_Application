@@ -7,6 +7,7 @@ import javax.ws.rs.core.Application;
 
 @ApplicationPath("")
 public class RssReader extends Application{
+
       public static void main(String[] args) {}
 }
 

@@ -1,7 +1,6 @@
 package br.dev.yann.rssreader.service;
 
-import javax.ejb.Stateful;
-import javax.enterprise.inject.Default;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -9,8 +8,7 @@ import br.dev.yann.rssreader.dao.AuthAnyUserDao;
 import br.dev.yann.rssreader.dto.UserDTO;
 import br.dev.yann.rssreader.entity.User;
 
-@Stateful
-@Default
+@RequestScoped
 public class AuthAnyUserService {
 
   @Inject

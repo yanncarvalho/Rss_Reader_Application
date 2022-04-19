@@ -6,6 +6,7 @@ import java.util.Map;
 import br.dev.yann.rssreader.model.BucketToken;
 
 public class BucketTokenManage extends Thread{
+
   private Map<Long, BucketToken> bucket;
 
 

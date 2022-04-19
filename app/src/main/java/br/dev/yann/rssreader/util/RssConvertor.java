@@ -1,5 +1,7 @@
 package br.dev.yann.rssreader.util;
 
+import java.io.IOException;
+
 import br.dev.yann.rssreader.job.RequestXmlFromHttp;
 import br.dev.yann.rssreader.model.Rss;
 import jakarta.xml.bind.JAXBContext;
@@ -27,9 +29,7 @@ public class RssConvertor {
 
       return rss;
 
-    } catch (JAXBException|java.io.IOException e) {
-
-      e.printStackTrace();
+    } catch (JAXBException | IOException e) {
       return null;
     }
   }

@@ -3,6 +3,7 @@ package br.dev.yann.rssreader.controller;
 import java.util.List;
 import java.util.Set;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -25,6 +26,7 @@ import br.dev.yann.rssreader.util.RssPagination;
 
 @Path("rss")
 @AuthRequired
+@RequestScoped
 public class RssController {
 
   private static final String HTTP_HTTPS = "^(http|https):\\/\\/.*";
@@ -58,6 +60,7 @@ public class RssController {
   @POST
   @Path("add")
   @Consumes(value = MediaType.APPLICATION_JSON)
+  @Produces(value = MediaType.APPLICATION_JSON)
   public Response addRss(@HeaderParam("idToken") long id, @Valid Set<@URL(regexp = HTTP_HTTPS) String> urlsSet){
       service.addRss(id, urlsSet);
     return Response.ok().build();

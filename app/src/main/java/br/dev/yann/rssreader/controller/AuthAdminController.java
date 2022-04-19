@@ -2,6 +2,7 @@ package br.dev.yann.rssreader.controller;
 
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -16,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.jboss.logging.Logger;
+
 import br.dev.yann.rssreader.annotation.AdminAuthRequired;
 import br.dev.yann.rssreader.annotation.AuthRequired;
 import br.dev.yann.rssreader.dto.UserDTO;
@@ -23,10 +26,13 @@ import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.model.MessageResponse;
 import br.dev.yann.rssreader.service.AuthAdminService;
 
+@RequestScoped
 @AuthRequired
 @AdminAuthRequired
 @Path("auth/admin")
 public class AuthAdminController{
+
+  private static Logger LOGGER = Logger.getLogger(AuthAdminController.class);
 
 
   @Inject
@@ -82,6 +88,7 @@ public class AuthAdminController{
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response deleteUserAsAdmin(@QueryParam("id") @Valid  @Positive long id){
     if(service.deleteUserAsAdmin(id)){
+      LOGGER.info("deleted User with id "+id);
       return Response.ok().build();
     } else {
       return Response.status(Status.NOT_FOUND)

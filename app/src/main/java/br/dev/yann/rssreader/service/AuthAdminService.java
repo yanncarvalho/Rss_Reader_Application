@@ -2,7 +2,7 @@ package br.dev.yann.rssreader.service;
 
 import java.util.List;
 
-import javax.ejb.Stateful;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -10,7 +10,7 @@ import br.dev.yann.rssreader.dao.AuthAdminDao;
 import br.dev.yann.rssreader.dto.UserDTO;
 import br.dev.yann.rssreader.entity.User;
 
-@Stateful
+@RequestScoped
 public class AuthAdminService {
 
   @Inject

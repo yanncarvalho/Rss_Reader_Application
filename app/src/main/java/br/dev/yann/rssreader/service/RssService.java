@@ -3,6 +3,7 @@ package br.dev.yann.rssreader.service;
 import java.util.List;
 import java.util.Set;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -11,6 +12,7 @@ import br.dev.yann.rssreader.entity.User;
 import br.dev.yann.rssreader.util.RssConvertorSlice;
 import br.dev.yann.rssreader.util.RssPagination;
 
+@RequestScoped
 public class RssService {
   @Inject
   @Named("Rss")

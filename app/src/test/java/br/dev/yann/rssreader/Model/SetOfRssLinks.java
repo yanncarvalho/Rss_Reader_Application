@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.rssconvertor.service;
+package br.dev.yann.rssreader.Model;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,7 +10,7 @@ public class SetOfRssLinks {
   final private String file;
 
   public SetOfRssLinks() {
-    this.file = "./src/test/java/br/dev/yann/rssreader/rssconvertor/service/resources/RssLinks";
+    this.file = "./src/test/java/br/dev/yann/rssreader/resources/RssLinks";
   }
 
   public Set<String> getSet() {
@@ -23,7 +23,6 @@ public class SetOfRssLinks {
 
       while ((xmlUrl = reader.readLine()) != null) {
         xmls.add(xmlUrl);
-
       }
 
     } catch (IOException e) {

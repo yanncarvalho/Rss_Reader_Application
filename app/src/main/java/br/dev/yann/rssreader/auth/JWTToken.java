@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.ejb.Stateful;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -18,6 +20,7 @@ import com.nimbusds.jwt.SignedJWT;
 
 import br.dev.yann.rssreader.entity.User;
 
+@Stateful
 public class JWTToken {
 
   private static final String ISSUER = "Rss_Reader_App";
