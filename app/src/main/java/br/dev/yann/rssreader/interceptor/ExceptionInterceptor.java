@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.filter;
+package br.dev.yann.rssreader.interceptor;
 
 import javax.inject.Inject;
 import javax.ws.rs.ClientErrorException;
@@ -14,9 +14,9 @@ import br.dev.yann.rssreader.model.MessageResponse;
 
 
 @Provider
-public class ExceptionFilter implements ExceptionMapper<Exception> {
+public class ExceptionInterceptor implements ExceptionMapper<Exception> {
 
-  private static Logger LOGGER = Logger.getLogger(ExceptionFilter.class);
+  private static Logger LOGGER = Logger.getLogger(ExceptionInterceptor.class);
   @Inject
   private MessageResponse messageResponse;
 
@@ -33,7 +33,7 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
         return Response.status(Status.TOO_MANY_REQUESTS).build();
       } else {
 
-        LOGGER.error(exception.fillInStackTrace());
+        LOGGER.error("An exception was thrown", exception);
         return Response.status(Status.INTERNAL_SERVER_ERROR)
             .entity(this.messageResponse.error("Failure while processing"))
             .build();

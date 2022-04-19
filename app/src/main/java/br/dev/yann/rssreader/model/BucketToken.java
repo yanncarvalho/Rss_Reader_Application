@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.jboss.logging.Logger;
 
-import br.dev.yann.rssreader.filter.ExceptionFilter;
+import br.dev.yann.rssreader.interceptor.ExceptionInterceptor;
 
 public class BucketToken {
 
@@ -22,7 +22,7 @@ public class BucketToken {
 
   private short requestNumber = 0;
 
-  private static Logger LOGGER = Logger.getLogger(ExceptionFilter.class);
+  private static Logger LOGGER = Logger.getLogger(ExceptionInterceptor.class);
 
   public BucketToken(long userId) {
     this.userId = userId;
@@ -37,7 +37,7 @@ public class BucketToken {
     }
 
     if(requestNumber >= MAX_REQUEST_PER_MIN){
-      LOGGER.fatal("User with "+userId+ " had too many requests (HTTP 409)");
+      LOGGER.fatal("User with ID = "+userId+ " had too many requests (HTTP 409) | LAST REQUEST: "+this.requestTime +" | RATE LIMIT: " + MAX_REQUEST_PER_MIN +" per minute");
       throw new ClientErrorException(Status.TOO_MANY_REQUESTS);
     }
 

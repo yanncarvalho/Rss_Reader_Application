@@ -16,6 +16,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import org.jboss.logging.Logger;
 
@@ -54,14 +55,15 @@ public class AuthAnyUserController {
   @JWTSerialization
   @Consumes(value = MediaType.APPLICATION_JSON)
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response login(@Valid UserDTO.Request.Login user, @Context HttpHeaders request) {
+  public Response login(@Valid UserDTO.Request.Login user, @Context HttpHeaders request, @Context UriInfo uriInfo) {
     User userNew = service.login(user);
     if (userNew != null) {
       return Response.status(Status.OK)
           .entity(userNew)
           .build();
     } else {
-      LOGGER.info("Unauthorized request: "+request.getRequestHeaders());
+
+      LOGGER.info("Unauthorized request in URI: "+uriInfo.getRequestUri()+" | REQUEST: "+request.getRequestHeaders());
       return Response.status(Status.UNAUTHORIZED)
           .entity(messageResponse.error("Authentication is not valid"))
           .build();
@@ -73,8 +75,7 @@ public class AuthAnyUserController {
   @Path("save")
   @Consumes(value = MediaType.APPLICATION_JSON)
   @Produces(value = MediaType.APPLICATION_JSON)
-  public Response save( @Valid  UserDTO.Request.Save user) {
-
+  public Response save( @Valid  UserDTO.Request.Save user) throws Exception {
     if (service.hasUsername(user.getUsername())) {
       return Response.status(Status.CONFLICT)
           .entity(messageResponse.error("Username already exists"))
@@ -82,7 +83,7 @@ public class AuthAnyUserController {
     } else {
       User newUser = new User(user.getName(), user.getPassword(), user.getUsername());
       service.save(newUser);
-      LOGGER.info("Saved new User");
+      LOGGER.info("Saved new user");
       return Response.status(Status.CREATED).build();
     }
   }
@@ -94,7 +95,7 @@ public class AuthAnyUserController {
   @Produces(value = MediaType.APPLICATION_JSON)
   public Response delete(@HeaderParam("idToken") long id) {
     service.delete(id);
-    LOGGER.info("deleted User with id "+id);
+    LOGGER.info("deleted User with ID = "+id);
     return Response.status(Status.OK).build();
   }
 

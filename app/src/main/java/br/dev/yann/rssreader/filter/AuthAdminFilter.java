@@ -40,13 +40,13 @@ public class AuthAdminFilter implements ContainerRequestFilter {
     //If there is no admins, the first user registered will be the admin
     if(adminsIds.isEmpty()){
       Long firstId = service.updateAndGetFirstId();
-      LOGGER.info("New administrator registered: user with id: "+firstId);
+      LOGGER.info("New administrator registered: user with ID = "+firstId);
       adminsIds.add(firstId);
     }
 
     String id = request.getHeaderString("idToken");
     if (!adminsIds.contains(Longs.tryParse(id))) {
-      LOGGER.warn("User with id: "+id+" tried to acess unauthorized endpoint; request information: "+request.getHeaders());
+      LOGGER.warn("User with ID = "+id+" tried to acess unauthorized endpoint; in URI: "+ request.getUriInfo().getRequestUri() + " | REQUEST: " +request.getHeaders().toString());
 
       request.abortWith(Response.status(Status.UNAUTHORIZED)
           .entity(messageResponse.error("Administrative privileges required"))

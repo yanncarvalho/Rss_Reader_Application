@@ -81,12 +81,12 @@ public class AuthAnyUserFilter implements ContainerRequestFilter {
 
       new BucketTokenManage(bucket).start();
 
-      LOGGER.info("Authorized token: "+token+" from user with id: "+id+ " and request:"+request.getRequest() );
+      LOGGER.info("Authorized user with ID = "+ id + " | in URI: "+request.getUriInfo().getRequestUri()+" | REQUEST: "+request.getHeaders().toString()) ;
 
       request.getHeaders().putSingle("idToken", id.toString());
 
     } catch (NotAuthorizedException e) {
-      LOGGER.info("Unauthorized request: "+request.getHeaders());
+      LOGGER.info("Unauthorized request in URI: "+request.getUriInfo().getRequestUri()+" | REQUEST: "+request.getHeaders().toString()) ;
       request.abortWith(Response.status(Status.UNAUTHORIZED)
           .entity(messageResponse.error(e.getChallenges().get(0).toString()))
           .build());

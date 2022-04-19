@@ -1,4 +1,4 @@
-package br.dev.yann.rssreader.filter;
+package br.dev.yann.rssreader.interceptor;
 
 
 import javax.validation.ConstraintViolation;
@@ -12,7 +12,7 @@ import br.dev.yann.rssreader.model.MessageResponse;
 
 
 @Provider
-public class ConstraintViolationFilter implements ExceptionMapper<ConstraintViolationException> {
+public class ConstraintViolationInterceptor implements ExceptionMapper<ConstraintViolationException> {
 
 
   @Override
@@ -23,7 +23,7 @@ public class ConstraintViolationFilter implements ExceptionMapper<ConstraintViol
   }
 
   private MessageResponse prepareMessage(ConstraintViolationException exception) {
-  
+
     var messageResponse = new MessageResponse();
       for (ConstraintViolation<?> cv : exception.getConstraintViolations()) {
         String[] pathSplit = cv.getPropertyPath().toString().split("\\.");
