@@ -15,7 +15,7 @@ import br.dev.yann.rssreader.entity.User;
 @SuppressWarnings({ "unchecked" })
 public class AuthAdminDao extends AuthAnyUserDao {
 
-  @PersistenceContext(name = "rssreader")
+ @PersistenceContext(name = "rssreader")
   private EntityManager manager;
 
   public List<User> findAllUsers() {
@@ -23,26 +23,26 @@ public class AuthAdminDao extends AuthAnyUserDao {
     return (List<User>) query.getResultList();
   }
 
-  public List<String> findAllAdminUsernames() {
-    Query query = manager.createQuery("SELECT u.username "
+  public List<Long> findAllAdminsIds() {
+    Query query = manager.createQuery("SELECT u.id "
         + "FROM users u "
-        + "WHERE u.isAdmin = 1 ", String.class);
-    return (List<String>) query.getResultList();
+        + "WHERE u.admin = 1 ", Long.class);
+    return (List<Long>) query.getResultList();
   }
 
   public void updateFirstIdAsAdmin() {
-    manager.createNativeQuery("UPDATE rssreader.users, "
-                                  + "(SELECT MIN(rssreader.users.id) AS id FROM rssreader.users) AS user_min "
-                            + "SET is_admin = 1 "
-                            + "WHERE users.id = user_min.id")
-          .executeUpdate();
+    manager.createNativeQuery("UPDATE users, "
+        + "(SELECT MIN(users.id) AS id FROM users) AS user_min "
+        + "SET is_admin = 1 "
+        + "WHERE users.id = user_min.id")
+        .executeUpdate();
   }
 
-  public String findUsernameByFirstId() {
-    Query query = manager.createQuery("SELECT u.username "
-                                    + "FROM users u "
-                                    + "WHERE u.id = (SELECT MIN(u.id) FROM users u)");
-    return (String) query.getSingleResult();
+  public Long findFirstId() {
+    Query query = manager.createQuery("SELECT u.id "
+        + "FROM users u "
+        + "WHERE u.id = (SELECT MIN(u.id) FROM users u)");
+    return (Long) query.getSingleResult();
   }
 
 }

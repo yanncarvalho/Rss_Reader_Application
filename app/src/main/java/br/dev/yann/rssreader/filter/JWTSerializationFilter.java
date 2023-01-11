@@ -27,8 +27,9 @@ public class JWTSerializationFilter implements ContainerResponseFilter{
   public void filter(ContainerRequestContext request, ContainerResponseContext response)
       throws IOException {
         if (response.getEntity() instanceof User user) {
+ 
           String token = jwt.getToken(user);
-          response.setEntity(
+           response.setEntity(
               messageResponse.addMessage("access_token", token)
                              .addMessage("token type", "Bearer")
                              .addMessage("expires_in", jwt.decode(token).get("exp"))

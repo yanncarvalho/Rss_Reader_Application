@@ -1,61 +1,125 @@
 package br.dev.yann.rssreader.dto;
 
-import java.util.List;
+import java.util.Set;
 
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.dev.yann.rssreader.entity.User;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-public enum UserDTO {
-  ;
-
-  private interface Name {
-    public String getName();
-  }
-
-   private interface Username {
-    public String getUsername();
-  }
-
-  private interface Id {
-    public Long getId();
-  }
-
-  private interface Password {
-    public String getPassword();
-  }
-
-  private interface AdminRole {
-    public Boolean isAdmin();
-  }
+public enum UserDTO {;
 
   public enum Request {;
-    @Data
-    private static class Base {};
+
 
     @Data
-    @EqualsAndHashCode(callSuper = true)
-    public static class Save extends Base implements Password, Username, Name {
-      private String password;
+    public static class Login {
+
+      @NotBlank
       private String username;
+
+      @NotBlank
+      private String password;
+
+
+    };
+
+    @Data
+    public static class Save{
+
+      @Size(min = 3, max = 255) @NotBlank
+      private String password;
+
+      @Getter
+      @Size(min = 3, max = 255) @NotBlank
+      private String username;
+
+      @Getter
+      @Size(min = 3, max = 255) @NotBlank
       private String name;
+
     };
 
 
+    public static class Update {
+
+      @Setter @Getter
+      @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+      private long id;
+
+      @Getter
+      @Size(min = 3, max = 255) @NotBlank
+      private String password = "STANDARD_VALUE";
+
+      @JsonIgnore
+      private boolean hasPassword = false;
+
+      @Getter
+      @Size(min = 3, max = 255) @NotBlank
+      private String username = "STANDARD_VALUE";
+
+      @JsonIgnore
+      private boolean hasUsername = false;
+
+      @Getter
+      @Size(min = 3, max = 255) @NotBlank
+      private String name = "STANDARD_VALUE";
+
+      @JsonIgnore
+      private boolean hasName = false;
+
+      public void setPassword(String password){
+        hasPassword = true;
+        this.password = password;
+      }
+
+      public void setUsername(String username){
+    	  this.username = username;
+        hasUsername = true;
+      }
+
+      public void setName(String name){
+        hasName = true;
+        this.name = name;
+      }
+
+      public boolean hasPassword(){
+        return this.hasPassword;
+      }
+
+      public boolean hasName(){
+        return this.hasName;
+      }
+
+      public boolean hasUsername(){
+        return this.hasUsername;
+      }
+    };
+
+   };
+
+   public enum Response {;
+
     @Data
-    @EqualsAndHashCode(callSuper = true)
-    public static class Update extends Base implements Password, Username, Name, Id, AdminRole {
-      private String password;
+    public static class FindAnyUser {
       private String username;
       private String name;
-      private Long id;
-      private Boolean isAdmin;
+      private Set<String> urls;
 
-      @Override
-      public Boolean isAdmin() {
-         return isAdmin;
+     public FindAnyUser(User user){
+        this.username = user.getUsername();
+        this.name = user.getName();
+        this.urls = user.getUrlsRss();
       }
+
     }
 
-  };
+  }
 
 }
